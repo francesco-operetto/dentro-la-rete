@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://francesco-operetto.github.io/dentro-la-rete/sitemap.xml

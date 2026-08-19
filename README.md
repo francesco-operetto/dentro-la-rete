@@ -2,6 +2,13 @@
 
 **Versione / Version: 7.3.23 beta**
 
+## Online / Online
+
+- **Pagina iniziale / Landing page:** https://francesco-operetto.github.io/dentro-la-rete/
+- **Italiano:** https://francesco-operetto.github.io/dentro-la-rete/it/
+- **English:** https://francesco-operetto.github.io/dentro-la-rete/en/
+
+
 *Dentro la rete* (*Inside the Network*) è un simulatore didattico interattivo per esplorare il funzionamento di piccole reti neurali direttamente nel browser.
 
 L'applicazione è costituita da HTML, CSS e JavaScript autonomi, senza librerie esterne. Può essere eseguita online tramite GitHub Pages oppure aperta localmente e usata offline.
