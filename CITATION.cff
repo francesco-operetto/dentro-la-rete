@@ -1,0 +1,20 @@
+cff-version: 1.2.0
+message: "If you use this software or its educational materials, please cite it."
+title: "Dentro la rete / Inside the Network"
+type: software
+authors:
+  - family-names: "Operetto"
+    given-names: "Francesco"
+version: "7.3.23-beta"
+license: "GPL-3.0-or-later"
+abstract: >-
+  Interactive educational simulator for exploring small neural networks,
+  including forward propagation, loss, backpropagation, parameter updates,
+  internal values, activation maps, and guided experiments.
+keywords:
+  - neural networks
+  - machine learning
+  - education
+  - backpropagation
+  - visualization
+  - teaching
