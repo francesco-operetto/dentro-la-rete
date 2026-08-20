@@ -15,6 +15,7 @@
     <meta property="og:url" content="https://francesco-operetto.github.io/dentro-la-rete/en/">
     <!-- SEO END -->
 
+    
     <title>Inside the Network — interactive neural network and backpropagation simulator</title>
     <!-- Embedded icon so the app remains fully self-contained and works offline. -->
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZpZXdCb3g9JzAgMCA2NCA2NCc+CiAgPHJlY3Qgd2lkdGg9JzY0JyBoZWlnaHQ9JzY0JyByeD0nMTYnIGZpbGw9JyMxYzJiM2EnLz4KICA8cGF0aCBkPSdNIDYgNDIgUSAzMiAzOCA1OCAxNCBMIDU4IDU4IEwgNiA1OCBaJyBmaWxsPScjZTg4NzFlJy8+CiAgPHBhdGggZD0nTSA2IDYgTCA1OCA2IEwgNTggMTQgUSAzMiAzOCA2IDQyIFonIGZpbGw9JyMyZjZmZDYnLz4KICA8cGF0aCBkPSdNIDYgNDIgUSAzMiAzOCA1OCAxNCcgZmlsbD0nbm9uZScgc3Ryb2tlPScjZjVjNTE4JyBzdHJva2Utd2lkdGg9JzQuNScgc3Ryb2tlLWxpbmVjYXA9J3JvdW5kJy8+CiAgPGNpcmNsZSBjeD0nMjInIGN5PScyMCcgcj0nNCcgZmlsbD0nI2ZmZmZmZicvPgogIDxjaXJjbGUgY3g9JzQyJyBjeT0nNDQnIHI9JzQnIGZpbGw9JyNmZmZmZmYnLz4KPC9zdmc+">
@@ -908,7 +909,7 @@ main.step-mode .inspector-card #inspector-content {
   50%      { fill: #f8e7a6; }
 }
 .node-selected { stroke: var(--highlight); stroke-width: 4; }
-/* SVG text does not receive pointer events; clicks are handled by the neuron
+/* SVG <text> elements do not receive pointer events; clicks are handled by the neuron
    or by the connection's clickable hit area. */
 .svg-text {
   font-family: var(--numeric-font);
@@ -2093,7 +2094,7 @@ dialog .guide-index a {
                   <span class="network-callout-text">Getting started: what is a neural network?</span>
                 </summary>
                 <div class="network-intro-box">
-                <p>A neural network is a mathematical model that transforms input values into one or more output values. To do this, it connects simple computational units called <b>neurons</b>. Despite the biological name, here they are simply mathematical units connected to one another. Each neuron processes its inputs and produces a value called an <b>activation</b>.</p>
+                <p>A neural network is a mathematical model that transforms input values into one or more output values. To do this, it connects simple computational units called <b>neurons</b>. Despite the biological-sounding name, here they are simply mathematical units connected to one another. Each neuron processes its inputs and produces a value called an <b>activation</b>.</p>
                 <p>Neurons are arranged in <b>layers</b>. The input layer receives the data, while the output layer produces the result. Any intermediate layers are called <b>hidden layers</b> because their activations remain internal to the network.</p>
                 <p>In the <b>input layer</b>, the activations are simply the input values supplied to the network after the normalization described below.</p>
                 <p>Each neuron in a hidden or output layer receives the activations produced by the previous layer. We denote these activations by <span class="numeric">a<sub>1</sub>, a<sub>2</sub>, …</span> and the <b>weights</b> of the corresponding connections by <span class="numeric">w<sub>1</sub>, w<sub>2</sub>, …</span>. The neuron multiplies each activation by the weight of its connection, adds the results, and then adds a <b>bias</b> <span class="numeric">b</span>:</p>
@@ -2101,7 +2102,7 @@ dialog .guide-index a {
                 <p>The sign and size of each weight determine how the activation carried by that connection affects the neuron. The bias is an additional term that shifts the neuron’s combined input <span class="numeric">z</span>. This value is then transformed by the <b>activation function</b> <span class="numeric">f</span>:</p>
                 <div class="normalization-formula">a = f(z)</div>
                 <p>The available functions are described in the <b>Activation functions guide</b> under <b>Controls</b>.</p>
-                <p>In hidden layers, a nonlinear activation function allows the network to represent relationships and boundaries more complex than a straight line. Without this nonlinearity, adding more hidden layers would still produce only linear decision boundaries—straight lines when each example has two input values.</p>
+                <p>In hidden layers, a nonlinear activation function allows the network to represent relationships and boundaries more complex than a straight line. Without this nonlinearity, adding more hidden layers would still produce only linear decision boundaries—straight lines when the problem has two input variables.</p>
                 <p>The activation <span class="numeric">a</span> is then passed to the next layer, and so on. The activations of the final layer are the network’s output values.</p>
                 <p>Before training, all weights are initialized randomly from a uniform distribution between −1 and 1, and biases start at 0. Larger networks typically use random initialization scaled for each layer, depending on its size and activation function.</p>
                 <p>During training, the network uses examples whose expected results are known. A <b>loss function</b> measures how far the network’s outputs are from those results. The network <b>gradually adjusts its weights and biases to reduce the mean loss on the training examples</b>. In other words, the rule linking inputs to results is not given to the network directly; it is approximated through these updates.</p>
@@ -2425,7 +2426,7 @@ dialog .guide-index a {
                 <button type="button" class="mini-button rgb-auto-button" id="button-classify-for-me-rgb"
                   title="Generate and label 10 colors automatically using relative sRGB luminance and the black/white contrast threshold">Auto-label 10 colors</button>
               </div>
-              <p class="rgb-file-note">The file preserves any dataset split already created: training only, or training and validation. If you save before building the training set, only the color collection is stored and a later split may be different.</p>
+              <p class="rgb-file-note">The file preserves any dataset split already created: training only, or training and validation. If you save before building the training set, only the color collection is stored, and a split created later may be different.</p>
               <p class="rgb-file-status" id="status-file-rgb" aria-live="polite"></p>
             </section>
 
@@ -2631,7 +2632,7 @@ dialog .guide-index a {
 
     </main>
 
-    <footer>© Francesco Operetto, 2026 · Software: <a href="#gpl-license-dialog" id="gpl-license-link" aria-haspopup="dialog">GPL-3.0-or-later</a> · Educational content: <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" rel="license noopener">CC BY-SA 4.0</a> · Version: <span id="app-version">7.3.23 beta</span></footer>
+    <footer>© <a href="https://francesco-operetto.github.io/" rel="author">Francesco Operetto</a>, 2026 · Software: <a href="#gpl-license-dialog" id="gpl-license-link" aria-haspopup="dialog">GPL-3.0-or-later</a> · Educational content: <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" rel="license noopener">CC BY-SA 4.0</a> · Version: <span id="app-version">7.3.24 beta</span></footer>
 
     <!-- ============ GPL LICENSE ============ -->
     <dialog id="gpl-license-dialog" class="license-dialog" aria-labelledby="gpl-license-title">
@@ -3827,7 +3828,7 @@ function generateSequenceDataset(rng) {
     // The oscillation is rectified with an absolute value, so peaks occur in
     // both half-cycles and sharp slope changes appear at the turning points.
     // The relationship between the previous four terms and the next one is therefore
-    // not representable by a single linear combination, while a ReLU network can
+    // cannot be represented by a single linear combination, whereas a ReLU network can
     // learn the different segments well.
     const value = 4.7 + 0.018 * n + 1.5 * Math.abs(Math.sin(2 * Math.PI * t / period));
     series.push(value);
@@ -4016,7 +4017,7 @@ const DATASET = {
       'Generate new data samples and repeat the experiments: the curves and any overfitting may change from one sample to the next.',
     ],
     observations: `
-      <p>Near 3 m, similar positions can produce different outcomes. Because position alone does not determine the result with certainty, even a suitable network may disagree with some observed measurements and need not reach 100% classification accuracy.</p>
+      <p>Near 3 m, similar positions can produce different outcomes. Because position alone does not determine the result with certainty, even a suitable network may disagree with some observed measurements and won't necessarily reach 100% classification accuracy.</p>
       <p>Often the training loss keeps falling while the validation loss stops improving or rises persistently. The network may be fitting peculiarities of the training sample that do not recur in new data. This is called <i>overfitting</i>.</p>
       <p>On the plot, the learned boundary may become irregular or jagged, as though it were following fluctuations in the training data instead of finding a simpler rule that generalizes.</p>
       <p>Larger networks can be more prone to this because they have more parameters and therefore more capacity to fit fluctuations in the training data. Overfitting is not automatic, however; it also depends on the sample, initialization, and training duration.</p>
@@ -5617,7 +5618,7 @@ function buildNetworkSvg() {
       const name = svgElement('text', {
         x: nameSide ? p.x - R - 6 : p.x,
         // Subscripts extend below the baseline, so when a name is placed
-        // above a neuron, leave a few extra pixels from the node edge.
+        // above a neuron, leave a few extra pixels of clearance from the node edge.
         y: nameSide ? p.y + 4 : p.y - R - 13,
         class: 'svg-text',
         'font-size': 13,
@@ -6134,7 +6135,7 @@ function showMultiInputNotice(text) {
 function readMultiInputPoint() {
   const values = [];
   // Read the generated fields directly from the container instead of relying
-  // on their dynamic ids.
+  // on dynamically generated IDs.
   const fields = [...el.multiInputFields.querySelectorAll('input.input-multi')];
   // Before looking for the first error, clear the accessibility state
   // for every field, including fields the loop may never reach.
@@ -8512,7 +8513,7 @@ function derivativeExplanationHtml(parameter) {
     `to <span class="numeric">E(${symbol})</span> at the current value of the ${name}.</p>` +
     `<p>If the derivative is positive at that point, the tangent slopes upward: increasing the ${name} ` +
     `by a sufficiently small amount increases the loss. If the derivative is negative, the tangent slopes ` +
-    `downward and a small increase in the ${name} decreases the loss.</p>` +
+    `downward: increasing the ${name} by a sufficiently small amount decreases the loss.</p>` +
     `<p>If we think of the change in the ${name} <span class="numeric">${updateValue}</span> as a displacement along the ` +
     `horizontal axis, the sign of the derivative therefore tells us the local direction in which the loss ` +
     `increases. In the update rule:</p>` +
@@ -9322,7 +9323,7 @@ function recordEpochLoss() {
   updateLossAveragesAfterAppend();
   if (S.lossHistory.length > MAX_LOSS_HISTORY + LOSS_HISTORY_TRIM_BLOCK) {
     S.lossHistory.splice(0, LOSS_HISTORY_TRIM_BLOCK);
-    // Trimming is rare; when it happens, rebuild the averages because points
+    // Trimming is rare; when it happens, rebuild the moving averages because points
     // near the new left edge use a different window.
     rebuildLossAverages();
   }
@@ -9716,7 +9717,7 @@ async function oneSampleStep() {
       `to <span class="numeric highlighted">${sAfter}</span>: ${stepDetails.outputs.length === 1
         ? `it has moved <em>farther</em> from y = ${d.y}`
         : 'the probability assigned to the observed class has decreased'} — ` +
-      `this can happen when η is large and the update overshoots the point that would have reduced the loss most.`;
+      `this can happen when η is large and the update overshoots a value that would have reduced the loss more.`;
   }
 
   const t3 =

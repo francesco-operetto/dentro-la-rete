@@ -5,7 +5,7 @@ type: software
 authors:
   - family-names: "Operetto"
     given-names: "Francesco"
-version: "7.3.23-beta"
+version: "7.3.24-beta"
 license: "GPL-3.0-or-later"
 abstract: >-
   Interactive educational simulator for exploring small neural networks,

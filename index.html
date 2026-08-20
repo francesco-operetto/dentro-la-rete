@@ -25,7 +25,7 @@
   "url": "https://francesco-operetto.github.io/dentro-la-rete/",
   "applicationCategory": "EducationalApplication",
   "operatingSystem": "Any",
-  "softwareVersion": "7.3.23 beta",
+  "softwareVersion": "7.3.24 beta",
   "isAccessibleForFree": true,
   "offers": {
     "@type": "Offer",
@@ -165,6 +165,35 @@
     }
 
     footer strong { color: var(--ink); }
+    footer a { color: inherit; text-underline-offset: 2px; }
+    footer a:hover { color: var(--ink); }
+
+    .project-links {
+      margin: -6px 0 16px;
+      text-align: center;
+    }
+
+    .project-link {
+      color: var(--ink);
+      font-size: 14px;
+      font-weight: 650;
+      text-decoration: none;
+      text-underline-offset: 3px;
+    }
+
+    .project-link:hover,
+    .project-link:focus-visible {
+      text-decoration: underline;
+      outline: none;
+    }
+
+    .development-note {
+      margin: 0 auto 20px;
+      max-width: 620px;
+      color: var(--pencil);
+      font-size: 12.5px;
+      line-height: 1.5;
+    }
 
     @media (max-width: 560px) {
       .languages { grid-template-columns: 1fr; }
@@ -197,8 +226,17 @@
       </a>
     </div>
 
+    <div class="project-links">
+      <a class="project-link" href="https://github.com/francesco-operetto/dentro-la-rete" target="_blank" rel="noopener">Repository GitHub →</a>
+    </div>
+
+    <p class="development-note">
+      Codice e testi sono stati sviluppati e revisionati anche con l’ausilio di strumenti di intelligenza artificiale.<br>
+      <span lang="en">Code and texts were developed and revised with the assistance of AI tools.</span>
+    </p>
+
     <footer>
-      <strong>Francesco Operetto</strong> · 2026 · Versione / Version 7.3.23 beta<br>
+      <strong><a href="https://francesco-operetto.github.io/" rel="author">Francesco Operetto</a></strong> · 2026 · Versione / Version 7.3.24 beta<br>
       Software: GPL-3.0-or-later · Contenuti didattici / Educational content: CC BY-SA 4.0
     </footer>
   </main>

@@ -1,12 +1,13 @@
 # Dentro la rete / Inside the Network
 
-**Versione / Version: 7.3.23 beta**
+**Versione / Version: 7.3.24 beta**
 
 ## Online / Online
 
 - **Pagina iniziale / Landing page:** https://francesco-operetto.github.io/dentro-la-rete/
 - **Italiano:** https://francesco-operetto.github.io/dentro-la-rete/it/
 - **English:** https://francesco-operetto.github.io/dentro-la-rete/en/
+- **Repository:** https://github.com/francesco-operetto/dentro-la-rete
 
 
 *Dentro la rete* (*Inside the Network*) è un simulatore didattico interattivo per esplorare il funzionamento di piccole reti neurali direttamente nel browser.
@@ -108,8 +109,14 @@ See [`LICENSE-CONTENT.md`](LICENSE-CONTENT.md) for details on the distinction be
 
 > “Dentro la rete”, © Francesco Operetto, 2026.
 
+## Nota sullo sviluppo / Development note
+
+Codice e testi sono stati sviluppati e revisionati anche con l’ausilio di strumenti di intelligenza artificiale.
+
+Code and texts were developed and revised with the assistance of AI tools.
+
 ## Stato del progetto / Project status
 
-La versione corrente è **7.3.23 beta**.
+La versione corrente è **7.3.24 beta**.
 
-The current version is **7.3.23 beta**.
+The current version is **7.3.24 beta**.
