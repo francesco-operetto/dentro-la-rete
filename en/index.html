@@ -16,6 +16,7 @@
     <!-- SEO END -->
 
     
+    
     <title>Inside the Network — interactive neural network and backpropagation simulator</title>
     <!-- Embedded icon so the app remains fully self-contained and works offline. -->
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZpZXdCb3g9JzAgMCA2NCA2NCc+CiAgPHJlY3Qgd2lkdGg9JzY0JyBoZWlnaHQ9JzY0JyByeD0nMTYnIGZpbGw9JyMxYzJiM2EnLz4KICA8cGF0aCBkPSdNIDYgNDIgUSAzMiAzOCA1OCAxNCBMIDU4IDU4IEwgNiA1OCBaJyBmaWxsPScjZTg4NzFlJy8+CiAgPHBhdGggZD0nTSA2IDYgTCA1OCA2IEwgNTggMTQgUSAzMiAzOCA2IDQyIFonIGZpbGw9JyMyZjZmZDYnLz4KICA8cGF0aCBkPSdNIDYgNDIgUSAzMiAzOCA1OCAxNCcgZmlsbD0nbm9uZScgc3Ryb2tlPScjZjVjNTE4JyBzdHJva2Utd2lkdGg9JzQuNScgc3Ryb2tlLWxpbmVjYXA9J3JvdW5kJy8+CiAgPGNpcmNsZSBjeD0nMjInIGN5PScyMCcgcj0nNCcgZmlsbD0nI2ZmZmZmZicvPgogIDxjaXJjbGUgY3g9JzQyJyBjeT0nNDQnIHI9JzQnIGZpbGw9JyNmZmZmZmYnLz4KPC9zdmc+">
@@ -750,6 +751,9 @@ main.step-mode .inspector-card #inspector-content {
   border-radius: 6px;
   background: #fbfdff;
 }
+/* vector-effect (SVG 2) keeps stroke widths unchanged when the SVG diagram
+   is resized. Standard property supported by modern browsers, even though
+   the Nu Html Checker flags it when used in CSS. */
 .activation-chart .axis {
   stroke: var(--border);
   stroke-width: 1;
@@ -2087,7 +2091,7 @@ dialog .guide-index a {
         <section class="card network-card">
           <div class="card-header">
             <h2 class="label">Network</h2>
-            <div class="network-callouts" aria-label="Introductory explanations of the network">
+            <div class="network-callouts">
               <details class="network-intro" id="network-intro">
                 <summary>
                   <span class="network-callout-arrow" aria-hidden="true">▾</span>
@@ -2193,7 +2197,7 @@ dialog .guide-index a {
 
           <section class="controls-group" aria-labelledby="activation-controls-title">
             <h3 class="title-group-controls" id="activation-controls-title">Activation functions</h3>
-            <div class="controls-row activations-row" aria-label="Activation functions">
+            <div class="controls-row activations-row">
             <div class="activation-control">
               <span class="activation-control-title">Hidden layers</span>
               <select id="select-activation" aria-describedby="hidden-activation-status">
@@ -2299,7 +2303,7 @@ dialog .guide-index a {
                       </div>
                       <div class="formula-activation">p<sub>i</sub> = e<sup>z<sub>i</sub></sup> / Σ<sub>j</sub> e<sup>z<sub>j</sub></sup></div>
                       <p><b>Property:</b> softmax is a multivariable function: it takes the output-neuron values <span class="numeric">z<sub>1</sub>, …, z<sub>k</sub></span> together and returns the same number of values between 0 and 1 whose sum is 1. Each result depends on all the inputs.</p>
-                      <div class="softmax-example" aria-label="Numerical softmax example with three classes">
+                      <div class="softmax-example">
                         <div><b>Example with three classes</b><br>
                           [2, 0, −1] &nbsp;→&nbsp; [0.844, 0.114, 0.042]
                           <small>0.844 &gt; 0; 0.114 &gt; 0; 0.042 &gt; 0 and 0.844 + 0.114 + 0.042 = 1.</small>
@@ -2437,12 +2441,12 @@ dialog .guide-index a {
                   <p id="status-dataset-rgb">Dataset not built yet. Until then, samples are labeled only L or D.</p>
                 </div>
               </div>
-              <p class="rgb-sample-legend" aria-label="Color sample legend">
+              <div class="rgb-sample-legend" role="group" aria-label="Color sample legend">
                 <span><b>T</b> training</span>
                 <span><b>V</b> validation</span>
                 <span><b>L</b> light</span>
                 <span><b>D</b> dark</span>
-              </p>
+              </div>
               <div class="rgb-sample-grid" id="grid-samples-rgb"></div>
             </section>
 
@@ -2536,7 +2540,7 @@ dialog .guide-index a {
             <h2 class="label">Loss over time</h2>
             <span class="note">Mean loss, epoch by epoch</span>
           </div>
-          <div class="loss-scale-controls" aria-label="Vertical scale controls for the loss graph">
+          <div class="loss-scale-controls" role="group" aria-label="Vertical scale controls for the loss graph">
             <span class="current-scale">y-axis: 0 to <strong id="loss-y-scale-value">—</strong></span>
             <button type="button" class="mini-button" id="button-zoom-in-error-y"
               title="Reduce the vertical range tenfold to magnify small losses">Y-axis zoom in ×10</button>
@@ -2544,7 +2548,7 @@ dialog .guide-index a {
               title="Increase the vertical range tenfold to show larger losses">Y-axis zoom out ×10</button>
           </div>
           <canvas id="loss-canvas" width="560" height="240"></canvas>
-          <div class="loss-values" aria-label="Current training and validation performance">
+          <div class="loss-values" role="group" aria-label="Current training and validation performance">
             <span class="epoch-loss" id="loss-epoch">Epoch 0</span>
             <div class="metrics-row training-value">
               <b class="metrics-name">Training</b>
@@ -2553,7 +2557,7 @@ dialog .guide-index a {
                 <span class="classification-metric">Correct predictions <strong id="training-accuracy-value">—</strong></span>
                 <span class="classification-metric">Balanced accuracy <strong id="training-balanced-accuracy-value">—</strong></span>
               </div>
-              <div class="per-class-metrics classification-metric" id="metrics-classes-training"
+              <div class="per-class-metrics classification-metric" id="metrics-classes-training" role="group"
                 aria-label="Percentage of correct predictions by class on the training set"></div>
             </div>
             <div class="metrics-row validation-value hidden" id="metrics-validation">
@@ -2563,7 +2567,7 @@ dialog .guide-index a {
                 <span class="classification-metric">Correct predictions <strong id="validation-accuracy-value">—</strong></span>
                 <span class="classification-metric">Balanced accuracy <strong id="validation-balanced-accuracy-value">—</strong></span>
               </div>
-              <div class="per-class-metrics classification-metric" id="metrics-classes-validation"
+              <div class="per-class-metrics classification-metric" id="metrics-classes-validation" role="group"
                 aria-label="Percentage of correct predictions by class on the validation set"></div>
             </div>
           </div>
@@ -2590,11 +2594,11 @@ dialog .guide-index a {
               <p>Likewise, choosing uniformly at random among the classes gives an average balanced accuracy of <span class="numeric">1/k</span>. This provides a useful baseline for interpreting model performance.</p>
             </div>
           </div>
-          <div class="simple-curve-legend" id="legend-curve-simple" aria-label="How to read the two curves">
+          <div class="simple-curve-legend" id="legend-curve-simple" role="group" aria-label="How to read the two curves">
             <span><i class="curve-sample training thin" aria-hidden="true"></i>After each epoch</span>
             <span><i class="curve-sample training thick" aria-hidden="true"></i>Overall trend</span>
           </div>
-          <div class="curve-legend hidden" id="validation-curve-legend" aria-label="How to read curve colors and line weights">
+          <div class="curve-legend hidden" id="validation-curve-legend" role="group" aria-label="How to read curve colors and line weights">
             <span></span>
             <span class="header">After each epoch</span>
             <span class="header">Overall trend</span>
@@ -2632,7 +2636,7 @@ dialog .guide-index a {
 
     </main>
 
-    <footer>© <a href="https://francesco-operetto.github.io/" rel="author">Francesco Operetto</a>, 2026 · Software: <a href="#gpl-license-dialog" id="gpl-license-link" aria-haspopup="dialog">GPL-3.0-or-later</a> · Educational content: <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" rel="license noopener">CC BY-SA 4.0</a> · Version: <span id="app-version">7.3.24 beta</span></footer>
+    <footer>© <a href="https://francesco-operetto.github.io/" rel="author">Francesco Operetto</a>, 2026 · Software: <a href="#gpl-license-dialog" id="gpl-license-link" aria-haspopup="dialog">GPL-3.0-or-later</a> · Educational content: <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" rel="license noopener">CC BY-SA 4.0</a> · Version: <span id="app-version">7.3.25 beta</span></footer>
 
     <!-- ============ GPL LICENSE ============ -->
     <dialog id="gpl-license-dialog" class="license-dialog" aria-labelledby="gpl-license-title">

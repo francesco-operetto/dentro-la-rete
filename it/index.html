@@ -16,6 +16,7 @@
     <!-- SEO END -->
 
     
+    
     <title>Dentro la rete — simulatore didattico di reti neurali e backpropagation</title>
     <!-- Icona incorporata nel file per mantenere l’app autonoma anche offline. -->
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZpZXdCb3g9JzAgMCA2NCA2NCc+CiAgPHJlY3Qgd2lkdGg9JzY0JyBoZWlnaHQ9JzY0JyByeD0nMTYnIGZpbGw9JyMxYzJiM2EnLz4KICA8cGF0aCBkPSdNIDYgNDIgUSAzMiAzOCA1OCAxNCBMIDU4IDU4IEwgNiA1OCBaJyBmaWxsPScjZTg4NzFlJy8+CiAgPHBhdGggZD0nTSA2IDYgTCA1OCA2IEwgNTggMTQgUSAzMiAzOCA2IDQyIFonIGZpbGw9JyMyZjZmZDYnLz4KICA8cGF0aCBkPSdNIDYgNDIgUSAzMiAzOCA1OCAxNCcgZmlsbD0nbm9uZScgc3Ryb2tlPScjZjVjNTE4JyBzdHJva2Utd2lkdGg9JzQuNScgc3Ryb2tlLWxpbmVjYXA9J3JvdW5kJy8+CiAgPGNpcmNsZSBjeD0nMjInIGN5PScyMCcgcj0nNCcgZmlsbD0nI2ZmZmZmZicvPgogIDxjaXJjbGUgY3g9JzQyJyBjeT0nNDQnIHI9JzQnIGZpbGw9JyNmZmZmZmYnLz4KPC9zdmc+">
@@ -750,6 +751,9 @@ main.step-mode .inspector-card #inspector-content {
   border-radius: 6px;
   background: #fbfdff;
 }
+/* vector-effect (SVG 2) mantiene invariato lo spessore dei tratti quando
+   il grafico SVG viene ridimensionato. Proprietà standard e supportata
+   dai browser moderni, anche se Nu Html Checker la segnala quando è usata nel CSS. */
 .activation-chart .axis {
   stroke: var(--border);
   stroke-width: 1;
@@ -2088,7 +2092,7 @@ dialog .guide-index a {
         <section class="card network-card">
           <div class="card-header">
             <h2 class="label">La rete</h2>
-            <div class="network-callouts" aria-label="Spiegazioni introduttive sulla rete">
+            <div class="network-callouts">
               <details class="network-intro" id="network-intro">
                 <summary>
                   <span class="network-callout-arrow" aria-hidden="true">▾</span>
@@ -2194,7 +2198,7 @@ dialog .guide-index a {
 
           <section class="controls-group" aria-labelledby="activation-controls-title">
             <h3 class="title-group-controls" id="activation-controls-title">Funzioni di attivazione</h3>
-            <div class="controls-row activations-row" aria-label="Funzioni di attivazione">
+            <div class="controls-row activations-row">
             <div class="activation-control">
               <span class="activation-control-title">Strati nascosti</span>
               <select id="select-activation" aria-describedby="hidden-activation-status">
@@ -2300,7 +2304,7 @@ dialog .guide-index a {
                       </div>
                       <div class="formula-activation">p<sub>i</sub> = e<sup>z<sub>i</sub></sup> / Σ<sub>j</sub> e<sup>z<sub>j</sub></sup></div>
                       <p><b>Proprietà:</b> è una funzione a più variabili: riceve contemporaneamente i valori <span class="numeric">z<sub>1</sub>, …, z<sub>k</sub></span> dei neuroni di uscita e restituisce altrettanti valori tra 0 e 1, la cui somma è 1. Ogni valore dipende da tutti i valori in ingresso.</p>
-                      <div class="softmax-example" aria-label="Esempio numerico della funzione softmax con tre classi">
+                      <div class="softmax-example">
                         <div><b>Esempio con tre classi</b><br>
                           [2, 0, −1] &nbsp;→&nbsp; [0,844; 0,114; 0,042]
                           <small>0,844 &gt; 0; 0,114 &gt; 0; 0,042 &gt; 0 e 0,844 + 0,114 + 0,042 = 1.</small>
@@ -2438,12 +2442,12 @@ dialog .guide-index a {
                   <p id="status-dataset-rgb">Dataset non ancora creato. Prima della creazione i campioni mostrano soltanto C o S.</p>
                 </div>
               </div>
-              <p class="rgb-sample-legend" aria-label="Legenda dei campioni di colore">
+              <div class="rgb-sample-legend" role="group" aria-label="Legenda dei campioni di colore">
                 <span><b>A</b> allenamento</span>
                 <span><b>V</b> verifica</span>
                 <span><b>C</b> chiaro</span>
                 <span><b>S</b> scuro</span>
-              </p>
+              </div>
               <div class="rgb-sample-grid" id="grid-samples-rgb"></div>
             </section>
 
@@ -2537,7 +2541,7 @@ dialog .guide-index a {
             <h2 class="label">L&rsquo;errore nel tempo</h2>
             <span class="note">Errore medio, giro dopo giro</span>
           </div>
-          <div class="loss-scale-controls" aria-label="Controlli della scala verticale del grafico dell'errore">
+          <div class="loss-scale-controls" role="group" aria-label="Controlli della scala verticale del grafico dell'errore">
             <span class="current-scale">Asse y: da 0 a <strong id="loss-y-scale-value">—</strong></span>
             <button type="button" class="mini-button" id="button-zoom-in-error-y"
               title="Riduce di dieci volte l'intervallo verticale e ingrandisce gli errori piccoli">Ingrandisci y ×10</button>
@@ -2545,7 +2549,7 @@ dialog .guide-index a {
               title="Aumenta di dieci volte l'intervallo verticale e mostra errori più grandi">Riduci y ×10</button>
           </div>
           <canvas id="loss-canvas" width="560" height="240"></canvas>
-          <div class="loss-values" aria-label="Prestazioni correnti di allenamento e verifica">
+          <div class="loss-values" role="group" aria-label="Prestazioni correnti di allenamento e verifica">
             <span class="epoch-loss" id="loss-epoch">Giro 0</span>
             <div class="metrics-row training-value">
               <b class="metrics-name">Allenamento</b>
@@ -2554,7 +2558,7 @@ dialog .guide-index a {
                 <span class="classification-metric">Classificazioni corrette <strong id="training-accuracy-value">—</strong></span>
                 <span class="classification-metric">Accuratezza bilanciata <strong id="training-balanced-accuracy-value">—</strong></span>
               </div>
-              <div class="per-class-metrics classification-metric" id="metrics-classes-training"
+              <div class="per-class-metrics classification-metric" id="metrics-classes-training" role="group"
                 aria-label="Percentuale di previsioni corrette per classe nell’allenamento"></div>
             </div>
             <div class="metrics-row validation-value hidden" id="metrics-validation">
@@ -2564,7 +2568,7 @@ dialog .guide-index a {
                 <span class="classification-metric">Classificazioni corrette <strong id="validation-accuracy-value">—</strong></span>
                 <span class="classification-metric">Accuratezza bilanciata <strong id="validation-balanced-accuracy-value">—</strong></span>
               </div>
-              <div class="per-class-metrics classification-metric" id="metrics-classes-validation"
+              <div class="per-class-metrics classification-metric" id="metrics-classes-validation" role="group"
                 aria-label="Percentuale di previsioni corrette per classe nella verifica"></div>
             </div>
           </div>
@@ -2591,11 +2595,11 @@ dialog .guide-index a {
               <p>In modo equivalente, anche una scelta casuale uniforme tra le classi produce in media un’accuratezza bilanciata pari a <span class="numeric">1/k</span>. Questo valore fornisce quindi un riferimento di base per interpretare le prestazioni del modello.</p>
             </div>
           </div>
-          <div class="simple-curve-legend" id="legend-curve-simple" aria-label="Come leggere le due curve">
+          <div class="simple-curve-legend" id="legend-curve-simple" role="group" aria-label="Come leggere le due curve">
             <span><i class="curve-sample training thin" aria-hidden="true"></i>Dopo ciascun giro</span>
             <span><i class="curve-sample training thick" aria-hidden="true"></i>Andamento generale</span>
           </div>
-          <div class="curve-legend hidden" id="validation-curve-legend" aria-label="Come leggere colori e spessori delle curve">
+          <div class="curve-legend hidden" id="validation-curve-legend" role="group" aria-label="Come leggere colori e spessori delle curve">
             <span></span>
             <span class="header">Dopo ciascun giro</span>
             <span class="header">Andamento generale</span>
@@ -2633,7 +2637,7 @@ dialog .guide-index a {
 
     </main>
 
-    <footer>© <a href="https://francesco-operetto.github.io/" rel="author">Francesco Operetto</a>, 2026 · Software: <a href="#gpl-license-dialog" id="gpl-license-link" aria-haspopup="dialog">GPL-3.0-or-later</a> · Contenuti didattici: <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" rel="license noopener">CC BY-SA 4.0</a> · Versione: <span id="app-version">7.3.24 beta</span></footer>
+    <footer>© <a href="https://francesco-operetto.github.io/" rel="author">Francesco Operetto</a>, 2026 · Software: <a href="#gpl-license-dialog" id="gpl-license-link" aria-haspopup="dialog">GPL-3.0-or-later</a> · Contenuti didattici: <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" rel="license noopener">CC BY-SA 4.0</a> · Versione: <span id="app-version">7.3.25 beta</span></footer>
 
     <!-- ============ LICENZA GPL ============ -->
     <dialog id="gpl-license-dialog" class="license-dialog" aria-labelledby="gpl-license-title">
