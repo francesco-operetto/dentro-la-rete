@@ -1,6 +1,6 @@
 # Dentro la rete / Inside the Network
 
-**Versione / Version: 7.3.25 beta**
+**Versione / Version: 7.3.26 beta**
 
 ## Online / Online
 
@@ -117,6 +117,6 @@ Code and texts were developed and revised with the assistance of AI tools.
 
 ## Stato del progetto / Project status
 
-La versione corrente è **7.3.25 beta**.
+La versione corrente è **7.3.26 beta**.
 
-The current version is **7.3.25 beta**.
+The current version is **7.3.26 beta**.

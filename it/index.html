@@ -17,6 +17,7 @@
 
     
     
+    
     <title>Dentro la rete — simulatore didattico di reti neurali e backpropagation</title>
     <!-- Icona incorporata nel file per mantenere l’app autonoma anche offline. -->
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZpZXdCb3g9JzAgMCA2NCA2NCc+CiAgPHJlY3Qgd2lkdGg9JzY0JyBoZWlnaHQ9JzY0JyByeD0nMTYnIGZpbGw9JyMxYzJiM2EnLz4KICA8cGF0aCBkPSdNIDYgNDIgUSAzMiAzOCA1OCAxNCBMIDU4IDU4IEwgNiA1OCBaJyBmaWxsPScjZTg4NzFlJy8+CiAgPHBhdGggZD0nTSA2IDYgTCA1OCA2IEwgNTggMTQgUSAzMiAzOCA2IDQyIFonIGZpbGw9JyMyZjZmZDYnLz4KICA8cGF0aCBkPSdNIDYgNDIgUSAzMiAzOCA1OCAxNCcgZmlsbD0nbm9uZScgc3Ryb2tlPScjZjVjNTE4JyBzdHJva2Utd2lkdGg9JzQuNScgc3Ryb2tlLWxpbmVjYXA9J3JvdW5kJy8+CiAgPGNpcmNsZSBjeD0nMjInIGN5PScyMCcgcj0nNCcgZmlsbD0nI2ZmZmZmZicvPgogIDxjaXJjbGUgY3g9JzQyJyBjeT0nNDQnIHI9JzQnIGZpbGw9JyNmZmZmZmYnLz4KPC9zdmc+">
@@ -2099,7 +2100,7 @@ dialog .guide-index a {
                   <span class="network-callout-text">Per cominciare: che cos’è una rete neurale?</span>
                 </summary>
                 <div class="network-intro-box">
-                <p>Una rete neurale è un modello matematico che trasforma alcuni valori di ingresso, chiamati <b>input</b>, in uno o più valori di uscita, chiamati <b>output</b>. Per realizzare questa trasformazione, la rete collega semplici unità di calcolo chiamate <b>neuroni</b>. Nonostante il nome sia ispirato alla biologia, in questo contesto si tratta semplicemente di unità matematiche connesse tra loro. Ogni neurone elabora gli ingressi e produce un valore chiamato <b>attivazione</b>.</p>
+                <p>Una rete neurale è un modello matematico che serve a produrre previsioni. Impara da esempi già risolti, cioè casi in cui, insieme ai valori di ingresso, chiamati <b>input</b>, è noto anche il risultato, e approssima così la regola che lega gli input al risultato, per poi applicarla a casi nuovi. Lo fa trasformando gli input in uno o più valori di uscita, chiamati <b>output</b>, dai quali si ricava la previsione: per esempio una classe oppure un valore numerico. Per realizzare questa trasformazione, la rete collega semplici unità di calcolo chiamate <b>neuroni</b>. Nonostante il nome sia ispirato alla biologia, in questo contesto si tratta semplicemente di unità matematiche connesse tra loro. Ogni neurone elabora gli ingressi e produce un valore chiamato <b>attivazione</b>.</p>
                 <p>I neuroni sono organizzati in <b>strati</b>. Lo strato di ingresso riceve i dati e quello di uscita produce il risultato. Gli eventuali strati intermedi sono detti <b>nascosti</b> perché le loro attivazioni restano valori interni alla rete.</p>
                 <p>Nello <b>strato di ingresso</b> le attivazioni coincidono con i valori di input forniti alla rete, dopo la normalizzazione descritta qui accanto.</p>
                 <p>Ogni neurone di uno strato nascosto o dello strato di uscita riceve le attivazioni prodotte dai neuroni dello strato precedente. Indichiamo queste attivazioni con <span class="numeric">a<sub>1</sub>, a<sub>2</sub>, …</span> e i <b>pesi</b> delle rispettive connessioni con <span class="numeric">w<sub>1</sub>, w<sub>2</sub>, …</span>. Il neurone moltiplica ogni attivazione per il peso della connessione che la trasporta, somma i risultati e aggiunge un <b>bias</b> <span class="numeric">b</span>:</p>
@@ -2637,7 +2638,7 @@ dialog .guide-index a {
 
     </main>
 
-    <footer>© <a href="https://francesco-operetto.github.io/" rel="author">Francesco Operetto</a>, 2026 · Software: <a href="#gpl-license-dialog" id="gpl-license-link" aria-haspopup="dialog">GPL-3.0-or-later</a> · Contenuti didattici: <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" rel="license noopener">CC BY-SA 4.0</a> · Versione: <span id="app-version">7.3.25 beta</span></footer>
+    <footer>© <a href="https://francesco-operetto.github.io/" rel="author">Francesco Operetto</a>, 2026 · Software: <a href="#gpl-license-dialog" id="gpl-license-link" aria-haspopup="dialog">GPL-3.0-or-later</a> · Contenuti didattici: <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" rel="license noopener">CC BY-SA 4.0</a> · Versione: <span id="app-version">7.3.26 beta</span></footer>
 
     <!-- ============ LICENZA GPL ============ -->
     <dialog id="gpl-license-dialog" class="license-dialog" aria-labelledby="gpl-license-title">
