@@ -18,6 +18,7 @@
     
     
     
+    
     <title>Dentro la rete — simulatore didattico di reti neurali e backpropagation</title>
     <!-- Icona incorporata nel file per mantenere l’app autonoma anche offline. -->
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZpZXdCb3g9JzAgMCA2NCA2NCc+CiAgPHJlY3Qgd2lkdGg9JzY0JyBoZWlnaHQ9JzY0JyByeD0nMTYnIGZpbGw9JyMxYzJiM2EnLz4KICA8cGF0aCBkPSdNIDYgNDIgUSAzMiAzOCA1OCAxNCBMIDU4IDU4IEwgNiA1OCBaJyBmaWxsPScjZTg4NzFlJy8+CiAgPHBhdGggZD0nTSA2IDYgTCA1OCA2IEwgNTggMTQgUSAzMiAzOCA2IDQyIFonIGZpbGw9JyMyZjZmZDYnLz4KICA8cGF0aCBkPSdNIDYgNDIgUSAzMiAzOCA1OCAxNCcgZmlsbD0nbm9uZScgc3Ryb2tlPScjZjVjNTE4JyBzdHJva2Utd2lkdGg9JzQuNScgc3Ryb2tlLWxpbmVjYXA9J3JvdW5kJy8+CiAgPGNpcmNsZSBjeD0nMjInIGN5PScyMCcgcj0nNCcgZmlsbD0nI2ZmZmZmZicvPgogIDxjaXJjbGUgY3g9JzQyJyBjeT0nNDQnIHI9JzQnIGZpbGw9JyNmZmZmZmYnLz4KPC9zdmc+">
@@ -2101,7 +2102,7 @@ dialog .guide-index a {
                 </summary>
                 <div class="network-intro-box">
                 <p>Una rete neurale è un modello matematico che serve a produrre previsioni. Impara da esempi già risolti, cioè casi in cui, insieme ai valori di ingresso, chiamati <b>input</b>, è noto anche il risultato, e approssima così la regola che lega gli input al risultato, per poi applicarla a casi nuovi. Lo fa trasformando gli input in uno o più valori di uscita, chiamati <b>output</b>, dai quali si ricava la previsione: per esempio una classe oppure un valore numerico. Per realizzare questa trasformazione, la rete collega semplici unità di calcolo chiamate <b>neuroni</b>. Nonostante il nome sia ispirato alla biologia, in questo contesto si tratta semplicemente di unità matematiche connesse tra loro. Ogni neurone elabora gli ingressi e produce un valore chiamato <b>attivazione</b>.</p>
-                <p>I neuroni sono organizzati in <b>strati</b>. Lo strato di ingresso riceve i dati e quello di uscita produce il risultato. Gli eventuali strati intermedi sono detti <b>nascosti</b> perché le loro attivazioni restano valori interni alla rete.</p>
+                <p>I neuroni sono organizzati in <b>strati</b>. Il primo è lo strato di ingresso, che riceve i dati; l’ultimo è lo strato di uscita, che produce gli <b>output</b>. Gli eventuali strati intermedi sono detti <b>nascosti</b> perché le loro attivazioni restano valori interni alla rete.</p>
                 <p>Nello <b>strato di ingresso</b> le attivazioni coincidono con i valori di input forniti alla rete, dopo la normalizzazione descritta qui accanto.</p>
                 <p>Ogni neurone di uno strato nascosto o dello strato di uscita riceve le attivazioni prodotte dai neuroni dello strato precedente. Indichiamo queste attivazioni con <span class="numeric">a<sub>1</sub>, a<sub>2</sub>, …</span> e i <b>pesi</b> delle rispettive connessioni con <span class="numeric">w<sub>1</sub>, w<sub>2</sub>, …</span>. Il neurone moltiplica ogni attivazione per il peso della connessione che la trasporta, somma i risultati e aggiunge un <b>bias</b> <span class="numeric">b</span>:</p>
                 <div class="normalization-formula">z = w<sub>1</sub>a<sub>1</sub> + w<sub>2</sub>a<sub>2</sub> + … + b = Σ<sub>i</sub> w<sub>i</sub>a<sub>i</sub> + b</div>
@@ -2110,11 +2111,11 @@ dialog .guide-index a {
                 <p>Le funzioni disponibili sono descritte nel riquadro <b>Guida alle attivazioni</b>, nella scheda <b>Comandi</b>.</p>
                 <p>Negli strati nascosti, una funzione di attivazione non lineare permette alla rete di rappresentare relazioni e confini più complessi di una retta. Senza questa componente, anche aggiungendo più strati nascosti la rete potrebbe costruire solo confini di decisione lineari, cioè rettilinei quando ciascun esempio è rappresentato da due valori di input.</p>
                 <p>L’attivazione <span class="numeric">a</span> viene a sua volta trasmessa allo strato successivo, e così via. Le attivazioni dell’ultimo strato costituiscono infine i valori di uscita della rete.</p>
-                <p>Prima dell’allenamento, tutti i pesi vengono scelti casualmente con distribuzione uniforme tra −1 e 1, mentre i bias partono da 0. Nelle reti più grandi si usano generalmente inizializzazioni casuali calibrate per ciascuno strato, in base alle sue dimensioni e alla funzione di attivazione.</p>
-                <p>Durante l’allenamento, la rete usa esempi per i quali è noto il risultato atteso. Una funzione, detta <b>funzione di errore</b>, misura quanto le uscite della rete si discostano da questi risultati. La rete <b>modifica progressivamente pesi e bias, con l’obiettivo di ridurre l’errore medio sugli esempi di allenamento</b>. La regola che lega gli input al risultato non viene quindi fornita direttamente alla rete, ma viene approssimata attraverso questi aggiornamenti.</p>
-                <p>L’errore si può misurare con funzioni diverse: quale usare è una scelta, guidata dal tipo di problema. Nei problemi con una sola uscita l’app usa l’errore quadratico, proporzionale al quadrato della differenza tra previsione e risultato atteso: è la scelta naturale per la previsione di un valore numerico e, per semplicità didattica, viene usato anche nella classificazione binaria. Nei problemi con tre o più classi si usa invece l’entropia incrociata, una delle funzioni di errore più comuni nei problemi reali di classificazione, che assegna un errore tanto maggiore quanto più è bassa la probabilità attribuita alla classe corretta. Le formule di entrambe le funzioni compaiono in <span class="key-label">Un dato alla volta</span>.</p>
+                <p>Prima dell’allenamento, tutti i pesi vengono scelti casualmente con distribuzione uniforme tra −1 e 1, mentre i bias partono da 0. Nelle reti più grandi, invece, si usano generalmente inizializzazioni casuali calibrate per ciascuno strato, in base alle sue dimensioni e alla funzione di attivazione.</p>
+                <p>Durante l’allenamento, una funzione, detta <b>funzione di errore</b>, misura quanto le uscite della rete si discostano dai risultati attesi degli esempi. La rete <b>modifica progressivamente pesi e bias, con l’obiettivo di ridurre l’errore medio sugli esempi di allenamento</b>. La regola che lega gli input al risultato non viene quindi fornita direttamente alla rete: viene approssimata attraverso questi aggiornamenti.</p>
+                <p>L’errore si può misurare con funzioni diverse: quale usare è una scelta, guidata dal tipo di problema. Nei problemi con una sola uscita l’applicazione usa l’errore quadratico, proporzionale al quadrato della differenza tra previsione e risultato atteso: è la scelta naturale per la previsione di un valore numerico e, per semplicità didattica, viene usato anche nella classificazione binaria. Nei problemi con tre o più classi l’applicazione usa invece l’entropia incrociata, una delle funzioni di errore più comuni nei problemi reali di classificazione, che assegna un errore tanto maggiore quanto più è bassa la probabilità attribuita alla classe corretta. Le formule di entrambe le funzioni compaiono in <span class="key-label">Un dato alla volta</span>.</p>
                 <p>La maggior parte dei problemi di questa applicazione ha due classi: il risultato atteso <span class="numeric">y</span> vale 0 oppure 1 e la rete produce un’unica uscita <span class="numeric">ŷ</span>, compresa tra 0 e 1. Per valori di <span class="numeric">ŷ</span> minori di 0,5 viene scelta la classe 0; per valori maggiori o uguali a 0,5 viene scelta la classe 1. Nei problemi con più di due classi, la rete produce un’uscita per ciascuna classe e sceglie quella con il valore maggiore. Nel problema delle sequenze, invece, un’uscita lineare rappresenta direttamente il valore numerico previsto.</p>
-                <p>Dopo l’allenamento, pesi e bias non vengono più modificati. La rete può allora elaborare nuovi dati per i quali non è noto il risultato atteso e produrre una <b>previsione</b>.</p>
+                <p>Terminato l’allenamento, pesi e bias restano fissi. Quando riceve nuovi dati, la rete calcola gli output con i parametri appresi.</p>
                 <p>In questa applicazione la rete è volutamente piccola, in modo che sia possibile osservare in dettaglio pesi, bias, attivazioni ed errore.</p>
                 </div>
               </details>
@@ -2311,7 +2312,7 @@ dialog .guide-index a {
                           <small>0,844 &gt; 0; 0,114 &gt; 0; 0,042 &gt; 0 e 0,844 + 0,114 + 0,042 = 1.</small>
                         </div>
                       </div>
-                      <p class="network-effect"><b>Effetto nella rete:</b> a ogni neurone di uscita corrisponde una classe. La softmax associa ai valori in ingresso numeri positivi, la cui somma vale 1, che possono essere interpretati come stime di probabilità; la rete prevede quindi la classe associata alla probabilità maggiore. Nell&rsquo;esempio viene quindi scelta la prima classe. In questa app la softmax si usa soltanto nello strato di uscita dei problemi con più di due classi.</p>
+                      <p class="network-effect"><b>Effetto nella rete:</b> a ogni neurone di uscita corrisponde una classe. La softmax associa ai valori in ingresso numeri positivi, la cui somma vale 1, che possono essere interpretati come stime di probabilità; la rete prevede quindi la classe associata alla probabilità maggiore. Nell&rsquo;esempio viene quindi scelta la prima classe. In questa applicazione la softmax si usa soltanto nello strato di uscita dei problemi con più di due classi.</p>
                     </article>
                   </div>
                 </div>
@@ -2638,7 +2639,7 @@ dialog .guide-index a {
 
     </main>
 
-    <footer>© <a href="https://francesco-operetto.github.io/" rel="author">Francesco Operetto</a>, 2026 · Software: <a href="#gpl-license-dialog" id="gpl-license-link" aria-haspopup="dialog">GPL-3.0-or-later</a> · Contenuti didattici: <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" rel="license noopener">CC BY-SA 4.0</a> · Versione: <span id="app-version">7.3.26 beta</span></footer>
+    <footer>© <a href="https://francesco-operetto.github.io/" rel="author">Francesco Operetto</a>, 2026 · Software: <a href="#gpl-license-dialog" id="gpl-license-link" aria-haspopup="dialog">GPL-3.0-or-later</a> · Contenuti didattici: <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" rel="license noopener">CC BY-SA 4.0</a> · Versione: <span id="app-version">7.3.28 beta</span></footer>
 
     <!-- ============ LICENZA GPL ============ -->
     <dialog id="gpl-license-dialog" class="license-dialog" aria-labelledby="gpl-license-title">
@@ -3329,7 +3330,7 @@ Public License instead of this License.  But first, please read
       <h2>Importa un dataset CSV/TSV</h2>
       <p class="import-intro">Il file deve avere una riga di intestazione. Puoi scegliere da 2 a 9 colonne numeriche come input e una colonna come classe; sono ammesse da 2 a 6 classi mutuamente esclusive.</p>
       <p class="import-intro"><b>Requisiti:</b> <span id="import-requirements-text"></span></p>
-      <p class="import-intro">Nell’app può essere presente un solo dataset importato alla volta: un nuovo dataset sostituisce quello importato in precedenza.</p>
+      <p class="import-intro">Nell’applicazione può essere presente un solo dataset importato alla volta: un nuovo dataset sostituisce quello importato in precedenza.</p>
       <div class="import-file-row">
         <label for="user-dataset-file-input">File</label>
         <input type="file" id="user-dataset-file-input" accept=".csv,.tsv,text/csv,text/tab-separated-values,text/plain">
@@ -3471,18 +3472,18 @@ Public License instead of this License.  But first, please read
       <section id="guide-import">
         <h3>Importare dati propri (CSV/TSV)</h3>
         <p>Con <span class="key-label">Importa CSV/TSV</span> puoi analizzare un tuo dataset di classificazione. Il file deve avere una riga di intestazione; dopo il caricamento scegli una colonna che contiene la classe e da 2 a 9 colonne numeriche da fornire alla rete come input. Sono ammesse da 2 a 6 classi, con una sola classe per ciascun esempio.</p>
-        <p>L&rsquo;app riconosce file separati da virgola, punto e virgola o tabulazione e mostra un&rsquo;anteprima prima dell&rsquo;importazione. Nei file separati da punto e virgola o tabulazione sono accettati anche numeri con la virgola decimale; nei file separati da virgola gli input numerici devono usare il punto decimale. Le colonne devono avere nomi distinti e non sono ammessi valori mancanti negli input scelti o nella colonna della classe. Il limite è di 2000 esempi e 2 MB per file.</p>
+        <p>L&rsquo;applicazione riconosce file separati da virgola, punto e virgola o tabulazione e mostra un&rsquo;anteprima prima dell&rsquo;importazione. Nei file separati da punto e virgola o tabulazione sono accettati anche numeri con la virgola decimale; nei file separati da virgola gli input numerici devono usare il punto decimale. Le colonne devono avere nomi distinti e non sono ammessi valori mancanti negli input scelti o nella colonna della classe. Il limite è di 2000 esempi e 2 MB per file.</p>
         <p>Per ciascun input, il valore minimo osservato nel file viene trasformato in 0 e il massimo in 1; i valori intermedi vengono trasformati proporzionalmente. Una colonna con un unico valore costante non può quindi essere usata come input.</p>
-        <p>Per usare il dataset servono almeno 20 esempi totali e almeno 6 esempi per classe. Se sono disponibili almeno 40 esempi totali e almeno 15 per classe, l&rsquo;app riserva automaticamente una parte degli esempi alla verifica, mantenendo tutte le classi rappresentate sia nell&rsquo;allenamento sia nella verifica. Se questi requisiti non sono raggiunti, tutti gli esempi vengono usati per l&rsquo;allenamento.</p>
+        <p>Per usare il dataset servono almeno 20 esempi totali e almeno 6 esempi per classe. Se sono disponibili almeno 40 esempi totali e almeno 15 per classe, l&rsquo;applicazione riserva automaticamente una parte degli esempi alla verifica, mantenendo tutte le classi rappresentate sia nell&rsquo;allenamento sia nella verifica. Se questi requisiti non sono raggiunti, tutti gli esempi vengono usati per l&rsquo;allenamento.</p>
         <p>Quando la configurazione è valida, <span class="key-label">Usa questo dataset</span> lo aggiunge al menu dei problemi. Se gli input sono due, i dati vengono mostrati nel piano e sono disponibili anche le mappe delle attivazioni; con tre o più input viene usata la vista tabellare.</p>
-        <p>Il dataset importato resta invariato durante l&rsquo;esperimento e il comando <span class="key-label">Nuovi dati</span> non compare. Nell&rsquo;app può essere presente un solo dataset importato alla volta: per usare un altro file scegli nuovamente <span class="key-label">Importa CSV/TSV</span>; il nuovo dataset sostituisce quello precedente.</p>
+        <p>Il dataset importato resta invariato durante l&rsquo;esperimento e il comando <span class="key-label">Nuovi dati</span> non compare. Nell&rsquo;applicazione può essere presente un solo dataset importato alla volta: per usare un altro file scegli nuovamente <span class="key-label">Importa CSV/TSV</span>; il nuovo dataset sostituisce quello precedente.</p>
         <p>Il file viene letto localmente dal browser e non viene conservato tra una visita e l&rsquo;altra: se ricarichi la pagina, devi importarlo di nuovo.</p>
       </section>
 
       <section id="guide-inspection">
         <h3>Esaminare un esempio, i valori interni e le mappe delle attivazioni</h3>
         <p>Durante l&rsquo;allenamento continuo, gli esempi vengono elaborati troppo rapidamente per mostrare valori interni leggibili; per questo le attivazioni vengono nascoste e non è possibile ispezionare pesi e neuroni.</p>
-        <p>Premendo <span class="key-label">Pausa</span>, l&rsquo;app prepara il prossimo esempio previsto dall&rsquo;ordine di allenamento usando i parametri correnti. La previsione viene mostrata subito; errore e derivate vengono calcolati quando apri l&rsquo;ispezione. Riprendendo l&rsquo;allenamento, quell&rsquo;esempio viene elaborato per primo.</p>
+        <p>Premendo <span class="key-label">Pausa</span>, l&rsquo;applicazione prepara il prossimo esempio previsto dall&rsquo;ordine di allenamento usando i parametri correnti. La previsione viene mostrata subito; errore e derivate vengono calcolati quando apri l&rsquo;ispezione. Riprendendo l&rsquo;allenamento, quell&rsquo;esempio viene elaborato per primo.</p>
         <p>Per calcolare errore e derivate deve essere selezionato un esempio per il quale sia noto il risultato atteso.</p>
         <p>Cliccando una connessione puoi esaminare il peso associato. Il grafico di <span class="numeric">E(w)</span> mostra come cambia l&rsquo;errore dell&rsquo;esempio osservato al variare di quel peso; sono evidenziati il valore attuale e la retta tangente. Il pannello indica inoltre il verso di crescita locale dell&rsquo;errore, il verso dell&rsquo;aggiornamento, la derivata, la variazione <span class="numeric">Δw</span> e il nuovo valore del peso. Il riquadro richiudibile spiega perché la derivata guida l&rsquo;aggiornamento nella discesa del gradiente.</p>
         <p>Cliccando un neurone, la scheda <b>Attivazione</b> mostra la somma pesata <span class="numeric">z</span>, l&rsquo;attivazione <span class="numeric">a = f(z)</span>, il grafico della funzione e la tangente nel punto considerato. Indica inoltre il valore di <span class="numeric">f′(z)</span> e il suo ruolo nel calcolo delle variazioni di pesi e bias. L&rsquo;approfondimento sul termine d&rsquo;errore <span class="numeric">δ</span> descrive la regola della catena, la backpropagation e il calcolo delle derivate.</p>
@@ -4019,7 +4020,7 @@ const DATASET = {
     ],
     howItWorks: [
       'Gli esempi sono suddivisi in due insiemi. Quelli di allenamento servono a calcolare gli aggiornamenti di pesi e bias; quelli di verifica restano separati e non modificano la rete.',
-      'Dopo ogni giro, l’app calcola su entrambi gli insiemi l’errore medio, la quota di classificazioni corrette e l’accuratezza bilanciata. Il confronto con i risultati della verifica aiuta così a valutare come la rete si comporta su dati nuovi, non usati per allenarla.',
+      'Dopo ogni giro, l’applicazione calcola su entrambi gli insiemi l’errore medio, la quota di classificazioni corrette e l’accuratezza bilanciata. Il confronto con i risultati della verifica aiuta così a valutare come la rete si comporta su dati nuovi, non usati per allenarla.',
     ],
     experiments: [
       'Confronta 1 strato da 4 neuroni con 2 strati da 9 neuroni ciascuno.',
@@ -4245,7 +4246,7 @@ const DATASET = {
     name: 'Sequenze numeriche: prevedi il prossimo termine',
     question: 'Quali saranno i termini successivi di questa sequenza?',
     howItWorks: [
-      '<b>Dalla sequenza agli esempi.</b> Il dato di partenza è un’unica sequenza di valori. Per usarla nell’allenamento, l’app la suddivide in finestre sovrapposte di cinque termini: i primi quattro diventano gli input della rete, mentre il quinto è il valore che la rete deve prevedere. Per esempio, i termini dal 1º al 4º servono a prevedere il 5º; quelli dal 2º al 5º servono a prevedere il 6º; quelli dal 3º al 6º servono a prevedere il 7º, e così via. A ogni passaggio la finestra avanza di una posizione e produce un nuovo esempio.',
+      '<b>Dalla sequenza agli esempi.</b> Il dato di partenza è un’unica sequenza di valori. Per usarla nell’allenamento, l’applicazione la suddivide in finestre sovrapposte di cinque termini: i primi quattro diventano gli input della rete, mentre il quinto è il valore che la rete deve prevedere. Per esempio, i termini dal 1º al 4º servono a prevedere il 5º; quelli dal 2º al 5º servono a prevedere il 6º; quelli dal 3º al 6º servono a prevedere il 7º, e così via. A ogni passaggio la finestra avanza di una posizione e produce un nuovo esempio.',
       '<b>Allenamento e verifica.</b> La parte finale della sequenza è esclusa dall’allenamento e viene usata per la verifica. Durante la verifica, ogni termine viene previsto usando i quattro termini reali precedenti.',
       '<b>Previsione di più termini.</b> Il primo termine della continuazione viene previsto usando gli ultimi quattro termini dell’allenamento; il secondo viene previsto usando gli ultimi tre termini dell’allenamento e la prima previsione, il terzo usando gli ultimi due termini noti dell’allenamento e le prime due previsioni, e così via. A ogni passaggio la finestra avanza di una posizione, includendo progressivamente anche i valori già previsti dalla rete.',
       'Un modello è detto <b>autoregressivo</b> quando prevede un nuovo valore usando valori precedenti della stessa sequenza. Nella continuazione, ogni previsione viene aggiunta alla sequenza e può quindi essere riutilizzata come input per prevedere i termini successivi. Con importanti differenze di dati, scala e architettura, un principio analogo è usato anche da molti <b>grandi modelli linguistici</b> (<i>large language models</i>, LLM) generativi: prevedono il <i>token</i> successivo a partire dai token precedenti e lo aggiungono al contesto per continuare. Un <i>token</i> è un’unità in cui viene suddiviso il testo e può corrispondere, per esempio, a una parola, a una parte di parola o a un segno di punteggiatura.',
@@ -6522,7 +6523,7 @@ function createUserDatasetMetadata(outcome) {
     question: 'Quale classe assegna la rete a questi esempi?',
     model: [
       'Gli input numerici vengono normalizzati tra 0 e 1 usando il minimo e il massimo osservati nel file.',
-      `Per usare il dataset servono almeno ${USER_DATASET_LIMITS.minTotal} esempi e almeno ${USER_DATASET_LIMITS.minimumPerClass} per classe. Se ci sono almeno ${USER_DATASET_LIMITS.validationThreshold} esempi totali e almeno ${USER_DATASET_LIMITS.validationMinimumPerClass} per classe, l’app riserva automaticamente una parte degli esempi alla verifica, mantenendo le diverse classi rappresentate sia nell’allenamento sia nella verifica. Altrimenti tutti gli esempi vengono usati per l’allenamento.`,
+      `Per usare il dataset servono almeno ${USER_DATASET_LIMITS.minTotal} esempi e almeno ${USER_DATASET_LIMITS.minimumPerClass} per classe. Se ci sono almeno ${USER_DATASET_LIMITS.validationThreshold} esempi totali e almeno ${USER_DATASET_LIMITS.validationMinimumPerClass} per classe, l’applicazione riserva automaticamente una parte degli esempi alla verifica, mantenendo le diverse classi rappresentate sia nell’allenamento sia nella verifica. Altrimenti tutti gli esempi vengono usati per l’allenamento.`,
     ],
     experiments: [
       'Confronta i risultati ottenuti con diverse architetture di rete e diversi tassi di apprendimento.',
@@ -8979,7 +8980,7 @@ dE/db = δ</div>` +
   } else {
     contentInsight =
       ruleChainDelta +
-      `<p>Nel neurone di uscita <span class="numeric">a = ŷ</span>. Nell’app ` +
+      `<p>Nel neurone di uscita <span class="numeric">a = ŷ</span>. Nell’applicazione ` +
       `<span class="numeric">E = ½(a − y)<sup>2</sup></span>, quindi ` +
       `<span class="numeric">dE/da = a − y</span>:</p>` +
       `<div class="formula">${isRegressionProblem() ? 'δ = a − y, perché la derivata della funzione lineare vale 1' : 'δ = (a − y)·f′(z)'}</div>` +
@@ -9626,7 +9627,7 @@ async function oneSampleStep() {
       ? `Il valore maggiore è ${formatNumber(stepDetails.outputs[predictedClass], 3, 3)} ` +
         `(<b>${classNameHtml(predictedClass, m)}</b>), quindi questa è la classe prevista.`
       : `Il valore massimo è condiviso da <b>${textMaxima}</b>; ` +
-        `per convenzione l’app sceglie la prima classe nell’ordine mostrato: ` +
+        `per convenzione l’applicazione sceglie la prima classe nell’ordine mostrato: ` +
         `<b>${classNameHtml(predictedClass, m)}</b>.`;
     addStep(
       `<p>Uscite della rete: <span class="numeric">${escapeHtml(outputsText(stepDetails.outputs, 3, m))}</span>. ` +
