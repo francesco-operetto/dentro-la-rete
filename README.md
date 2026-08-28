@@ -2,6 +2,8 @@
 
 **Versione / Version: 7.3.28 beta**
 
+[![Numerical validation](https://github.com/francesco-operetto/dentro-la-rete/actions/workflows/numerical-validation.yml/badge.svg)](https://github.com/francesco-operetto/dentro-la-rete/actions/workflows/numerical-validation.yml)
+
 ## Online / Online
 
 - **Pagina iniziale / Landing page:** https://francesco-operetto.github.io/dentro-la-rete/
@@ -58,6 +60,22 @@ The root `index.html` is a bilingual landing page for choosing the language.
 - import of classification datasets in CSV/TSV format;
 - reproducible experiments through a fixed random seed.
 
+## Dataset di esempio per l’importazione / Example import dataset
+
+La cartella [`examples/import/`](examples/import/) contiene un dataset sintetico CSV con **2000 esempi, 9 input e 6 classi**, pensato per provare la funzione di importazione vicino ai limiti supportati dall’applicazione. Il file usa scale numeriche molto diverse fra le colonne, così da esercitare anche la normalizzazione eseguita durante l’importazione. La documentazione bilingue descrive struttura, generazione e controlli effettuati.
+
+The [`examples/import/`](examples/import/) folder contains a synthetic CSV dataset with **2,000 examples, 9 inputs, and 6 classes**, designed to exercise the import feature close to the application’s supported limits. The input columns deliberately use very different numerical scales, so the example also exercises per-column normalization. The bilingual documentation describes its structure, generation, and validation checks.
+
+## Validazione numerica / Numerical validation
+
+La cartella [`tests/`](tests/) contiene una suite che estrae direttamente il nucleo matematico JavaScript dell’applicazione e ne confronta risultati, derivate e aggiornamenti dei parametri con **PyTorch `float64` e `autograd`**. Sono inclusi anche controlli con differenze finite e brevi sequenze di aggiornamenti.
+
+Il workflow [`numerical-validation.yml`](.github/workflows/numerical-validation.yml) esegue la validazione sia sulla versione inglese sia su quella italiana quando cambiano l’app o i test; può anche essere avviato manualmente dalla scheda **Actions** di GitHub. I dettagli e le istruzioni per l’esecuzione locale sono in [`tests/README.md`](tests/README.md).
+
+The [`tests/`](tests/) folder contains a suite that extracts the application’s actual JavaScript mathematical core and compares its outputs, derivatives, and parameter updates against **PyTorch `float64` and `autograd`**. It also includes finite-difference checks and short update trajectories.
+
+The [`numerical-validation.yml`](.github/workflows/numerical-validation.yml) workflow validates both the English and Italian application files whenever the app or tests change, and it can also be run manually from GitHub’s **Actions** tab. See [`tests/README.md`](tests/README.md) for details and local instructions.
+
 ## Uso locale / Local use
 
 Non è richiesta alcuna installazione.
@@ -83,10 +101,26 @@ dentro-la-rete/
 │   └── index.html
 ├── en/
 │   └── index.html
+├── examples/
+│   └── import/
+│       ├── README.md
+│       └── test_import_9_input_6_classi_2000_difficolta_intermedia.csv
+├── tests/
+│   ├── README.md
+│   ├── generate_fixtures.mjs
+│   ├── test_engine.py
+│   ├── requirements.txt
+│   └── fixtures/
+│       └── .gitignore
+├── .github/
+│   └── workflows/
+│       └── numerical-validation.yml
 ├── README.md
 ├── LICENSE
 ├── LICENSE-CONTENT.md
 ├── CITATION.cff
+├── robots.txt
+├── sitemap.xml
 ├── .gitignore
 └── .nojekyll
 ```
