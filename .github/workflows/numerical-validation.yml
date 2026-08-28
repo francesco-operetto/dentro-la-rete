@@ -1,0 +1,49 @@
+name: Numerical validation
+
+on:
+  push:
+    paths:
+      - 'en/index.html'
+      - 'it/index.html'
+      - 'tests/**'
+      - '.github/workflows/numerical-validation.yml'
+  pull_request:
+    paths:
+      - 'en/index.html'
+      - 'it/index.html'
+      - 'tests/**'
+      - '.github/workflows/numerical-validation.yml'
+  workflow_dispatch:
+
+jobs:
+  pytorch-reference:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install test dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install pytest
+          python -m pip install torch --index-url https://download.pytorch.org/whl/cpu
+
+      - name: Validate English application against PyTorch
+        run: |
+          node tests/generate_fixtures.mjs --html en/index.html
+          pytest -q tests/test_engine.py
+
+      - name: Validate Italian application against PyTorch
+        run: |
+          node tests/generate_fixtures.mjs --html it/index.html
+          pytest -q tests/test_engine.py
