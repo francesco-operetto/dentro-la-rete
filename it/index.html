@@ -19,6 +19,7 @@
     
     
     
+    
     <title>Dentro la rete — simulatore didattico di reti neurali e backpropagation</title>
     <!-- Icona incorporata nel file per mantenere l’app autonoma anche offline. -->
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZpZXdCb3g9JzAgMCA2NCA2NCc+CiAgPHJlY3Qgd2lkdGg9JzY0JyBoZWlnaHQ9JzY0JyByeD0nMTYnIGZpbGw9JyMxYzJiM2EnLz4KICA8cGF0aCBkPSdNIDYgNDIgUSAzMiAzOCA1OCAxNCBMIDU4IDU4IEwgNiA1OCBaJyBmaWxsPScjZTg4NzFlJy8+CiAgPHBhdGggZD0nTSA2IDYgTCA1OCA2IEwgNTggMTQgUSAzMiAzOCA2IDQyIFonIGZpbGw9JyMyZjZmZDYnLz4KICA8cGF0aCBkPSdNIDYgNDIgUSAzMiAzOCA1OCAxNCcgZmlsbD0nbm9uZScgc3Ryb2tlPScjZjVjNTE4JyBzdHJva2Utd2lkdGg9JzQuNScgc3Ryb2tlLWxpbmVjYXA9J3JvdW5kJy8+CiAgPGNpcmNsZSBjeD0nMjInIGN5PScyMCcgcj0nNCcgZmlsbD0nI2ZmZmZmZicvPgogIDxjaXJjbGUgY3g9JzQyJyBjeT0nNDQnIHI9JzQnIGZpbGw9JyNmZmZmZmYnLz4KPC9zdmc+">
@@ -202,7 +203,7 @@ main.maps-mode .activation-maps-card {
   display: block;
 }
 
-/* Le ispezioni ordinarie restano tra La rete e Comandi nella colonna sinistra. */
+/* Le ispezioni ordinarie sono collocate tra La rete e Comandi nella colonna sinistra. */
 main.inspection-mode .inspector-card {
   align-self: stretch;
   display: grid;
@@ -1960,7 +1961,7 @@ dialog .guide-index a {
     display: contents;
   }
 
-  /* Su schermi stretti tutte le schede tornano nella prima colonna. */
+  /* Su schermi stretti tutte le schede sono disposte in un’unica colonna. */
   main .network-card,
   main .data-card,
   main .controls-card,
@@ -1984,7 +1985,7 @@ dialog .guide-index a {
     max-height: none;
     display: block;
   }
-  /* Sotto questa larghezza il passo guidato torna a una sola colonna. */
+  /* Sotto questa larghezza anche il passo guidato usa una sola colonna. */
   main.step-mode .network-card,
   main.step-mode .inspector-card,
   main.step-mode .controls-card,
@@ -2639,7 +2640,7 @@ dialog .guide-index a {
 
     </main>
 
-    <footer>© <a href="https://francesco-operetto.github.io/" rel="author">Francesco Operetto</a>, 2026 · Software: <a href="#gpl-license-dialog" id="gpl-license-link" aria-haspopup="dialog">GPL-3.0-or-later</a> · Contenuti didattici: <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" rel="license noopener">CC BY-SA 4.0</a> · Versione: <span id="app-version">7.3.28 beta</span></footer>
+    <footer>© <a href="https://francesco-operetto.github.io/" rel="author">Francesco Operetto</a>, 2026 · Software: <a href="#gpl-license-dialog" id="gpl-license-link" aria-haspopup="dialog">GPL-3.0-or-later</a> · Contenuti didattici: <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" rel="license noopener">CC BY-SA 4.0</a> · Versione: <span id="app-version">7.3.29 beta</span></footer>
 
     <!-- ============ LICENZA GPL ============ -->
     <dialog id="gpl-license-dialog" class="license-dialog" aria-labelledby="gpl-license-title">
@@ -3511,12 +3512,11 @@ Public License instead of this License.  But first, please read
 
     <script>
 /* ============================================================
-   DENTRO LA RETE — nucleo matematico
+   DENTRO LA RETE — motore numerico
    ------------------------------------------------------------
-   Questo blocco contiene il nucleo matematico, separato dalla
-   grafica. Le funzioni principali corrispondono ai passaggi della
-   rete: forward, errore, delta, derivate rispetto ai parametri
-   e aggiornamento dei pesi.
+   Questo blocco contiene il motore numerico della rete, indipendente
+   dall'interfaccia e dalle definizioni dei problemi: inizializzazione,
+   forward, funzione di errore, backpropagation e aggiornamento dei parametri.
    ============================================================ */
 
 /* ---------- generatore pseudocasuale con seme ----------
@@ -3787,6 +3787,18 @@ function meanLoss(network, trainingData) {
 function meanLossIfPresent(network, trainingData) {
   return trainingData.length ? meanLoss(network, trainingData) : null;
 }
+
+    </script>
+
+    <script>
+/* ============================================================
+   DENTRO LA RETE — problemi e dati
+   ------------------------------------------------------------
+   Questo blocco raccoglie le utilità per i dati e le definizioni dei problemi:
+   generazione e mescolamento degli esempi, regole, testi, classi, unità e
+   configurazioni delle viste. Usa le funzioni del motore numerico; il rendering
+   è gestito dal blocco dell’interfaccia.
+   ============================================================ */
 
 /* Mescola un array sul posto con Fisher–Yates, evitando che ogni giro
    presenti gli esempi nello stesso ordine. */
@@ -4344,9 +4356,9 @@ const DATASET = {
 /* ============================================================
    DENTRO LA RETE — interfaccia
    ------------------------------------------------------------
-   Questo blocco gestisce l'interfaccia: disegno della rete (SVG),
-   piano dei dati (canvas), grafico dell'errore, pannello di dettaglio
-   e comandi. Il nucleo matematico è nel blocco precedente.
+   Questo blocco collega il motore numerico e i metadati dei problemi
+   all'interfaccia: disegno della rete (SVG), piano dei dati (canvas),
+   grafico dell'errore, pannello di dettaglio e comandi.
    ============================================================ */
 'use strict';
 
@@ -5409,8 +5421,8 @@ function applyDatasetMetadata() {
       createSectionGuide('Il modello', meta().model, 'model') +
       createSectionGuide('Indicazioni', meta().experiments, 'tests');
   }
-  // Il riquadro "Che cosa osservare" usa il testo specifico del dataset.
-  // Al cambio di dataset viene richiuso per evitare contenuti già espansi.
+  // Il riquadro "Che cosa osservare" dipende dal dataset; dopo ogni cambio
+  // viene aggiornato e richiuso.
   const observationsBox = $id('box-what-observe');
   const contentObservations = $id('content-what-observe');
   const toggleObservations = $id('toggle-what-observe');
@@ -8754,7 +8766,7 @@ function drawActivationCurve(refs, fA, z0, a0) {
   c.beginPath(); c.moveTo(X(z0), Y(a0)); c.lineTo(X(0), Y(a0)); c.stroke();
   c.setLineDash([]);
 
-  // il punto (z, a) del neurone, adesso
+  // il punto corrente (z, a) del neurone
   c.beginPath(); c.arc(X(z0), Y(a0), 5, 0, Math.PI * 2);
   c.fillStyle = COLORS.gold; c.fill();
   c.strokeStyle = COLORS.ink; c.lineWidth = 1.6; c.stroke();
@@ -9818,12 +9830,12 @@ function readArchitecture() {
 
 function changeArchitecture() {
   if (S.busy) return;
-  // Ferma l'allenamento prima di cambiare architettura: stopTraining ridisegna
-  // ancora la rete corrente.
+  // Ferma l'allenamento prima di cambiare architettura: stopTraining esegue
+  // un ultimo ridisegno della rete corrente.
   const wasInPlay = S.playing;
   if (wasInPlay) stopTraining();
   readArchitecture();
-  clearInspector();          // gli indici della lente possono non esistere più
+  clearInspector();          // gli indici dell’ispezione dipendono dall’architettura
   buildNetworkSvg();
   restart();
   // Se l'allenamento era attivo, prepara subito il primo esempio della rete ricreata.

@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 
+import assert from 'node:assert/strict';
 import crypto from 'node:crypto';
 import fs from 'node:fs';
 import path from 'node:path';
@@ -37,13 +38,13 @@ function compareCandidates(a, b) {
   for (const key of ['major', 'minor', 'patch']) {
     if (a.version[key] !== b.version[key]) return b.version[key] - a.version[key];
   }
-  // Prefer the English file when both language versions have the same code.
+  // Prefer the English file when both language files have the same version.
   if (a.version.language !== b.version.language) return a.version.language === 'EN' ? -1 : 1;
   return a.name.localeCompare(b.name);
 }
 
 function discoverHtml() {
-  // Repository layout: prefer the English published app, then the Italian one.
+  // Repository layout: prefer the published English app, then the Italian one.
   // The fallback keeps the script usable with versioned standalone HTML files.
   for (const relativePath of ['en/index.html', 'it/index.html']) {
     const candidate = path.join(REPO_ROOT, relativePath);
@@ -65,7 +66,7 @@ function discoverHtml() {
   return path.join(REPO_ROOT, candidates[0].name);
 }
 
-function extractMathematicalCore(html) {
+function extractNumericalEngine(html) {
   const scripts = [];
   const scriptPattern = /<script(?:\s[^>]*)?>([\s\S]*?)<\/script>/gi;
   let match;
@@ -80,29 +81,37 @@ function extractMathematicalCore(html) {
 
   if (candidates.length !== 1) {
     throw new Error(
-      `Expected exactly one mathematical-core <script>, found ${candidates.length}. ` +
+      `Expected exactly one numerical-engine <script>, found ${candidates.length}. ` +
       'The application structure may have changed.'
     );
   }
-  return candidates[0];
+
+  const engine = candidates[0];
+  if (engine.includes('const DATASET') || engine.includes('document.') || engine.includes('const el =')) {
+    throw new Error(
+      'The numerical-engine <script> also contains problem definitions or DOM code. ' +
+      'Keep the numerical engine isolated from data/UI concerns.'
+    );
+  }
+  return engine;
 }
 
 function loadAppApi(htmlPath) {
   const html = fs.readFileSync(htmlPath, 'utf8');
-  const core = extractMathematicalCore(html);
+  const engine = extractNumericalEngine(html);
   const context = vm.createContext({ console, Math });
   const expose = `\n;globalThis.__networkTestApi = {\n` +
     `  ACTIVATIONS, forward, computeStep, prepareUpdates, applyStep,\n` +
     `  trainingStep, lossFromOutputs, softmax\n` +
     `};\n`;
 
-  vm.runInContext(core + expose, context, {
-    filename: `${path.basename(htmlPath)}#mathematical-core`,
+  vm.runInContext(engine + expose, context, {
+    filename: `${path.basename(htmlPath)}#numerical-engine`,
   });
 
   return {
     api: context.__networkTestApi,
-    coreHash: crypto.createHash('sha256').update(core).digest('hex'),
+    engineHash: crypto.createHash('sha256').update(engine).digest('hex'),
   };
 }
 
@@ -148,10 +157,16 @@ function assertTrainingStepComposition(api, spec) {
   api.applyStep(composedNetwork, composedStep, spec.learningRate);
   const entryPointStep = api.trainingStep(entryPointNetwork, spec.x, spec.y, spec.learningRate);
 
-  if (JSON.stringify(entryPointStep) !== JSON.stringify(composedStep) ||
-      JSON.stringify(parameters(entryPointNetwork)) !== JSON.stringify(parameters(composedNetwork))) {
-    throw new Error(`${spec.name}: trainingStep diverges from computeStep + applyStep.`);
-  }
+  assert.deepStrictEqual(
+    entryPointStep,
+    composedStep,
+    `${spec.name}: trainingStep result diverges from computeStep + applyStep.`,
+  );
+  assert.deepStrictEqual(
+    parameters(entryPointNetwork),
+    parameters(composedNetwork),
+    `${spec.name}: trainingStep parameters diverge from computeStep + applyStep.`,
+  );
 }
 
 function makeSingleCase(api, spec) {
@@ -265,7 +280,7 @@ function buildFixtures(api, sourceInfo) {
     {
       name: 'relu_zero_convention', network: reluZeroNetwork,
       x: [0.25], y: 1, learningRate: 0.10, finiteDifference: false,
-      note: 'The hidden pre-activation is exactly zero; both implementations are expected to use ReLU derivative 0 there.',
+      note: 'The hidden pre-activation is exactly zero, so both implementations use 0 for the ReLU derivative at this point.',
     },
   ];
 
@@ -296,18 +311,18 @@ function buildFixtures(api, sourceInfo) {
     },
   ];
 
-  // trainingStep is the entry point used by the application's training loop.
-  // It must remain exactly equivalent to the explicit computeStep + applyStep composition.
+  // trainingStep is the entry point used by the application's training loop;
+  // these cases verify exact equivalence with computeStep + applyStep.
   for (const spec of singleSpecs) assertTrainingStepComposition(api, spec);
 
   const cases = singleSpecs.map(spec => makeSingleCase(api, spec));
   const trajectories = trajectorySpecs.map(spec => makeTrajectory(api, spec));
 
-  // Keep the ordinary ReLU cases away from the non-differentiable point.
+  // Verify that the other ReLU fixtures stay away from the non-differentiable point at zero.
   for (const fixture of cases.filter(item => item.activation === 'relu' && item.name !== 'relu_zero_convention')) {
     const hiddenZ = fixture.step.zs.slice(1, -1).flat();
     if (hiddenZ.some(value => Math.abs(value) < 1e-6)) {
-      throw new Error(`${fixture.name} accidentally places a ReLU pre-activation too close to zero.`);
+      throw new Error(`${fixture.name}: a ReLU pre-activation is too close to zero.`);
     }
   }
 
@@ -335,17 +350,17 @@ function main() {
 
   const htmlPath = path.resolve(args.html || discoverHtml());
   const outputPath = path.resolve(args.out);
-  const { api, coreHash } = loadAppApi(htmlPath);
+  const { api, engineHash } = loadAppApi(htmlPath);
   const fixtures = buildFixtures(api, {
     htmlFile: path.relative(REPO_ROOT, htmlPath).replaceAll(path.sep, '/'),
-    mathematicalCoreSha256: coreHash,
+    numericalEngineSha256: engineHash,
   });
 
   fs.mkdirSync(path.dirname(outputPath), { recursive: true });
   fs.writeFileSync(outputPath, JSON.stringify(fixtures, null, 2) + '\n', 'utf8');
 
   console.log(`Application: ${htmlPath}`);
-  console.log(`Mathematical core SHA-256: ${coreHash}`);
+  console.log(`Numerical engine SHA-256: ${engineHash}`);
   console.log(`Single-step cases: ${fixtures.cases.length}`);
   console.log(`trainingStep composition checks: ${fixtures.cases.length} exact matches`);
   console.log(`Short trajectories: ${fixtures.trajectories.length}`);

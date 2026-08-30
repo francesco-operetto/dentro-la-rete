@@ -1,6 +1,6 @@
-"""Numerical cross-check of the application's neural-network core against PyTorch.
+"""Numerical validation of the application's neural-network core against PyTorch.
 
-The JavaScript fixtures are generated from the actual mathematical-core <script>
+The JavaScript fixtures are generated from the actual numerical-engine <script>
 inside the application HTML. PyTorch rebuilds the same networks in float64 and
 uses autograd to obtain the reference derivatives.
 """
@@ -60,7 +60,7 @@ def assert_scalar_close(actual: float, expected: float, label: str) -> None:
 
 
 class TorchReference:
-    """Same network topology, with gradients supplied independently by autograd."""
+    """PyTorch reference network matching each fixture, with gradients computed by autograd."""
 
     def __init__(self, fixture: dict[str, Any], parameters: dict[str, Any] | None = None):
         self.arch = fixture["arch"]
@@ -113,8 +113,8 @@ class TorchReference:
 
     def loss(self, outputs: torch.Tensor, y: int | float) -> torch.Tensor:
         if self.output["type"] == "multiclass":
-            # The application's 1e-12 clamp is inactive in these fixtures. Keeping
-            # it here matches the documented loss while autograd supplies the gradient.
+            # The fixtures keep the target probability above 1e-12, so this clamp
+            # mirrors the application's loss without affecting the autograd gradient.
             return -torch.log(torch.clamp(outputs[int(y)], min=1e-12))
         target = tensor(float(y))
         return 0.5 * (outputs[0] - target) ** 2
@@ -216,7 +216,7 @@ def test_single_step_against_pytorch_autograd(fixture: dict[str, Any]) -> None:
     ids=lambda item: item["name"],
 )
 def test_selected_derivatives_against_central_finite_differences(fixture: dict[str, Any]) -> None:
-    # A numerical derivative is less precise than autograd, but provides a third,
+    # Finite differences are less precise than autograd, but provide a third,
     # independent check of the sign and magnitude of representative derivatives.
     weight_fd = finite_difference(fixture, "weight", 0, 0, 0)
     weight_grad = fixture["step"]["gradW"][0][0][0]

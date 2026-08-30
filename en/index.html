@@ -19,6 +19,7 @@
     
     
     
+    
     <title>Inside the Network — interactive neural network and backpropagation simulator</title>
     <!-- Embedded icon so the app remains fully self-contained and works offline. -->
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZpZXdCb3g9JzAgMCA2NCA2NCc+CiAgPHJlY3Qgd2lkdGg9JzY0JyBoZWlnaHQ9JzY0JyByeD0nMTYnIGZpbGw9JyMxYzJiM2EnLz4KICA8cGF0aCBkPSdNIDYgNDIgUSAzMiAzOCA1OCAxNCBMIDU4IDU4IEwgNiA1OCBaJyBmaWxsPScjZTg4NzFlJy8+CiAgPHBhdGggZD0nTSA2IDYgTCA1OCA2IEwgNTggMTQgUSAzMiAzOCA2IDQyIFonIGZpbGw9JyMyZjZmZDYnLz4KICA8cGF0aCBkPSdNIDYgNDIgUSAzMiAzOCA1OCAxNCcgZmlsbD0nbm9uZScgc3Ryb2tlPScjZjVjNTE4JyBzdHJva2Utd2lkdGg9JzQuNScgc3Ryb2tlLWxpbmVjYXA9J3JvdW5kJy8+CiAgPGNpcmNsZSBjeD0nMjInIGN5PScyMCcgcj0nNCcgZmlsbD0nI2ZmZmZmZicvPgogIDxjaXJjbGUgY3g9JzQyJyBjeT0nNDQnIHI9JzQnIGZpbGw9JyNmZmZmZmYnLz4KPC9zdmc+">
@@ -202,7 +203,7 @@ main.maps-mode .activation-maps-card {
   display: block;
 }
 
-/* Regular inspections remain between Network and Controls in the left column. */
+/* Regular inspection panels sit between Network and Controls in the left column. */
 main.inspection-mode .inspector-card {
   align-self: stretch;
   display: grid;
@@ -1959,7 +1960,7 @@ dialog .guide-index a {
     display: contents;
   }
 
-  /* On narrow screens, all cards return to the first column. */
+  /* On narrow screens, all cards are arranged in a single column. */
   main .network-card,
   main .data-card,
   main .controls-card,
@@ -1983,7 +1984,7 @@ dialog .guide-index a {
     max-height: none;
     display: block;
   }
-  /* Below this width, the guided step returns to a single column. */
+  /* Below this width, the guided step also uses a single-column layout. */
   main.step-mode .network-card,
   main.step-mode .inspector-card,
   main.step-mode .controls-card,
@@ -2638,7 +2639,7 @@ dialog .guide-index a {
 
     </main>
 
-    <footer>© <a href="https://francesco-operetto.github.io/" rel="author">Francesco Operetto</a>, 2026 · Software: <a href="#gpl-license-dialog" id="gpl-license-link" aria-haspopup="dialog">GPL-3.0-or-later</a> · Educational content: <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" rel="license noopener">CC BY-SA 4.0</a> · Version: <span id="app-version">7.3.28 beta</span></footer>
+    <footer>© <a href="https://francesco-operetto.github.io/" rel="author">Francesco Operetto</a>, 2026 · Software: <a href="#gpl-license-dialog" id="gpl-license-link" aria-haspopup="dialog">GPL-3.0-or-later</a> · Educational content: <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" rel="license noopener">CC BY-SA 4.0</a> · Version: <span id="app-version">7.3.29 beta</span></footer>
 
     <!-- ============ GPL LICENSE ============ -->
     <dialog id="gpl-license-dialog" class="license-dialog" aria-labelledby="gpl-license-title">
@@ -3511,11 +3512,11 @@ Public License instead of this License.  But first, please read
     
 <script>
 /* ============================================================
-   INSIDE THE NETWORK — mathematical core
+   INSIDE THE NETWORK — numerical engine
    ------------------------------------------------------------
-   This block contains the mathematical core, kept separate from the UI.
-   The main functions follow the network's computation steps: forward pass,
-   loss, deltas, parameter derivatives, and weight updates.
+   This block contains the network's numerical engine, independent of the
+   interface and problem definitions: initialization, forward pass, loss,
+   backpropagation, and parameter updates.
    ============================================================ */
 
 /* ---------- seeded pseudorandom generator ----------
@@ -3784,6 +3785,17 @@ function meanLoss(network, trainingData) {
 function meanLossIfPresent(network, trainingData) {
   return trainingData.length ? meanLoss(network, trainingData) : null;
 }
+
+    </script>
+
+    <script>
+/* ============================================================
+   INSIDE THE NETWORK — problems and data
+   ------------------------------------------------------------
+   This block contains data utilities and problem definitions: example generation
+   and shuffling, rules, explanatory text, classes, units, and view configuration.
+   It uses the numerical engine; rendering is handled by the interface block.
+   ============================================================ */
 
 /* Shuffles an array in place with Fisher–Yates so examples are not presented
    in the same order every epoch. */
@@ -4339,9 +4351,9 @@ const DATASET = {
 /* ============================================================
    INSIDE THE NETWORK — interface
    ------------------------------------------------------------
-   This block manages the UI: network drawing (SVG), data plane (canvas),
-   loss chart, details panel, and controls. The mathematical core is in the
-   preceding block.
+   This block connects the numerical engine and problem metadata to the UI:
+   network drawing (SVG), data plane (canvas), loss chart, details panel, and
+   controls.
    ============================================================ */
 'use strict';
 
@@ -5402,8 +5414,8 @@ function applyDatasetMetadata() {
       createSectionGuide('The model', meta().model, 'model') +
       createSectionGuide('Things to try', meta().experiments, 'tests');
   }
-  // The "What to look for" panel uses dataset-specific text.
-  // Collapse it when the dataset changes so old content does not remain open.
+  // "What to look for" is dataset-specific; update and collapse it whenever
+  // the dataset changes.
   const observationsBox = $id('box-what-observe');
   const contentObservations = $id('content-what-observe');
   const toggleObservations = $id('toggle-what-observe');
@@ -9789,12 +9801,12 @@ function readArchitecture() {
 
 function changeArchitecture() {
   if (S.busy) return;
-  // Stop training before changing architecture because stopTraining redraws
-  // the current network once more.
+  // Stop training before changing architecture because stopTraining performs
+  // one final redraw of the current network.
   const wasInPlay = S.playing;
   if (wasInPlay) stopTraining();
   readArchitecture();
-  clearInspector();          // inspector indices may no longer be valid
+  clearInspector();          // inspector indices depend on the architecture
   buildNetworkSvg();
   restart();
   // If training was running, immediately prepare the first example for the rebuilt network.

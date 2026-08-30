@@ -1,6 +1,6 @@
 # Dentro la rete / Inside the Network
 
-**Versione / Version: 7.3.28 beta**
+**Versione / Version: 7.3.29 beta**
 
 [![Numerical validation](https://github.com/francesco-operetto/dentro-la-rete/actions/workflows/numerical-validation.yml/badge.svg)](https://github.com/francesco-operetto/dentro-la-rete/actions/workflows/numerical-validation.yml)
 
@@ -68,11 +68,11 @@ The [`examples/import/`](examples/import/) folder contains a synthetic CSV datas
 
 ## Validazione numerica / Numerical validation
 
-La cartella [`tests/`](tests/) contiene una suite che estrae direttamente il nucleo matematico JavaScript dell’applicazione e ne confronta risultati, derivate e aggiornamenti dei parametri con **PyTorch `float64` e `autograd`**. Sono inclusi anche controlli con differenze finite e brevi sequenze di aggiornamenti.
+La cartella [`tests/`](tests/) contiene una suite che estrae direttamente il motore numerico JavaScript dell’applicazione, ne verifica l’isolamento da interfaccia e definizioni dei problemi e ne confronta risultati, derivate e aggiornamenti dei parametri con **PyTorch `float64` e `autograd`**. Sono inclusi anche controlli con differenze finite e brevi sequenze di aggiornamenti.
 
 Il workflow [`numerical-validation.yml`](.github/workflows/numerical-validation.yml) esegue la validazione sia sulla versione inglese sia su quella italiana quando cambiano l’app o i test; può anche essere avviato manualmente dalla scheda **Actions** di GitHub. I dettagli e le istruzioni per l’esecuzione locale sono in [`tests/README.md`](tests/README.md).
 
-The [`tests/`](tests/) folder contains a suite that extracts the application’s actual JavaScript mathematical core and compares its outputs, derivatives, and parameter updates against **PyTorch `float64` and `autograd`**. It also includes finite-difference checks and short update trajectories.
+The [`tests/`](tests/) folder contains a suite that extracts the application’s actual JavaScript numerical engine, checks its isolation from the UI and problem definitions, and compares its outputs, derivatives, and parameter updates against **PyTorch `float64` and `autograd`**. It also includes finite-difference checks and short update trajectories.
 
 The [`numerical-validation.yml`](.github/workflows/numerical-validation.yml) workflow validates both the English and Italian application files whenever the app or tests change, and it can also be run manually from GitHub’s **Actions** tab. See [`tests/README.md`](tests/README.md) for details and local instructions.
 
