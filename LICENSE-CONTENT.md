@@ -16,7 +16,7 @@ See the `LICENSE` file in the root of this repository.
 
 In addition, the original educational and explanatory material intended for
 users — including the guide, explanations, problem descriptions, activities,
-observations and example datasets — is also available under the Creative Commons
+observations, example datasets and companion algorithm notes — is also available under the Creative Commons
 Attribution-ShareAlike 4.0 International license:
 
 **SPDX-License-Identifier: CC-BY-SA-4.0**
@@ -51,7 +51,7 @@ Il testo completo è nel file `LICENSE` nella radice del repository.
 
 In aggiunta, i contenuti didattici ed esplicativi originali destinati
 all'utente — tra cui guida, spiegazioni, descrizioni dei problemi, attività,
-osservazioni e dataset di esempio — sono disponibili anche secondo la licenza Creative Commons
+osservazioni, dataset di esempio e schede di approfondimento sugli algoritmi — sono disponibili anche secondo la licenza Creative Commons
 Attribuzione-Condividi allo stesso modo 4.0 Internazionale:
 
 **SPDX-License-Identifier: CC-BY-SA-4.0**

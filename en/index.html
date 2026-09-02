@@ -20,6 +20,7 @@
     
     
     
+
     <title>Inside the Network — interactive neural network and backpropagation simulator</title>
     <!-- Embedded icon so the app remains fully self-contained and works offline. -->
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZpZXdCb3g9JzAgMCA2NCA2NCc+CiAgPHJlY3Qgd2lkdGg9JzY0JyBoZWlnaHQ9JzY0JyByeD0nMTYnIGZpbGw9JyMxYzJiM2EnLz4KICA8cGF0aCBkPSdNIDYgNDIgUSAzMiAzOCA1OCAxNCBMIDU4IDU4IEwgNiA1OCBaJyBmaWxsPScjZTg4NzFlJy8+CiAgPHBhdGggZD0nTSA2IDYgTCA1OCA2IEwgNTggMTQgUSAzMiAzOCA2IDQyIFonIGZpbGw9JyMyZjZmZDYnLz4KICA8cGF0aCBkPSdNIDYgNDIgUSAzMiAzOCA1OCAxNCcgZmlsbD0nbm9uZScgc3Ryb2tlPScjZjVjNTE4JyBzdHJva2Utd2lkdGg9JzQuNScgc3Ryb2tlLWxpbmVjYXA9J3JvdW5kJy8+CiAgPGNpcmNsZSBjeD0nMjInIGN5PScyMCcgcj0nNCcgZmlsbD0nI2ZmZmZmZicvPgogIDxjaXJjbGUgY3g9JzQyJyBjeT0nNDQnIHI9JzQnIGZpbGw9JyNmZmZmZmYnLz4KPC9zdmc+">
@@ -2101,12 +2102,12 @@ dialog .guide-index a {
                   <span class="network-callout-text">Getting started: what is a neural network?</span>
                 </summary>
                 <div class="network-intro-box">
-                <p>A neural network is a mathematical model used to make predictions. It learns from solved examples—cases where, along with the input values, called <b>inputs</b>, the result is also known—and in this way approximates the rule linking the inputs to the result, so it can then apply it to new cases. It does this by transforming the inputs into one or more output values, called <b>outputs</b>, from which the prediction is derived: for example, a class or a numerical value. To carry out this transformation, the network connects simple computational units called <b>neurons</b>. Despite the biological-sounding name, here they are simply mathematical units connected to one another. Each neuron processes its inputs and produces a value called an <b>activation</b>.</p>
+                <p>A neural network is a mathematical model used to make predictions. It learns from solved examples—cases where, along with the input values, called <b>inputs</b>, the result is also known—and in this way approximates the rule linking the inputs to the result, so it can then apply it to new cases. It does this by transforming the inputs into one or more output values, called <b>outputs</b>, from which the prediction is derived: for example, a class or a numerical value. To carry out this transformation, the network connects simple computational units called <b>neurons</b>. Despite the biological-sounding name, here they are simply mathematical units connected to one another. Each neuron in a hidden or output layer combines the values it receives and computes an intermediate value <span class="numeric">z</span>.</p>
                 <p>Neurons are arranged in <b>layers</b>. The first is the input layer, which receives the data; the last is the output layer, which produces the <b>outputs</b>. Any intermediate layers are called <b>hidden layers</b> because their activations remain internal to the network.</p>
                 <p>In the <b>input layer</b>, the activations are simply the input values supplied to the network after the normalization described below.</p>
                 <p>Each neuron in a hidden or output layer receives the activations produced by the previous layer. We denote these activations by <span class="numeric">a<sub>1</sub>, a<sub>2</sub>, …</span> and the <b>weights</b> of the corresponding connections by <span class="numeric">w<sub>1</sub>, w<sub>2</sub>, …</span>. The neuron multiplies each activation by the weight of its connection, adds the results, and then adds a <b>bias</b> <span class="numeric">b</span>:</p>
                 <div class="normalization-formula">z = w<sub>1</sub>a<sub>1</sub> + w<sub>2</sub>a<sub>2</sub> + … + b = Σ<sub>i</sub> w<sub>i</sub>a<sub>i</sub> + b</div>
-                <p>The sign and size of each weight determine how the activation carried by that connection affects the neuron. The bias is an additional term that shifts the neuron’s combined input <span class="numeric">z</span>. This value is then transformed by the <b>activation function</b> <span class="numeric">f</span>:</p>
+                <p>The sign and size of each weight determine how the activation carried by that connection affects the neuron. The bias is an additional term that shifts the neuron’s combined input <span class="numeric">z</span>. The <b>activation function</b> <span class="numeric">f</span> then transforms <span class="numeric">z</span> into the neuron’s activation <span class="numeric">a</span>:</p>
                 <div class="normalization-formula">a = f(z)</div>
                 <p>The available functions are described in the <b>Activation functions guide</b> under <b>Controls</b>.</p>
                 <p>In hidden layers, a nonlinear activation function allows the network to represent relationships and boundaries more complex than a straight line. Without this nonlinearity, adding more hidden layers would still produce only linear decision boundaries—straight lines when the problem has two input variables.</p>
@@ -2639,7 +2640,7 @@ dialog .guide-index a {
 
     </main>
 
-    <footer>© <a href="https://francesco-operetto.github.io/" rel="author">Francesco Operetto</a>, 2026 · Software: <a href="#gpl-license-dialog" id="gpl-license-link" aria-haspopup="dialog">GPL-3.0-or-later</a> · Educational content: <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" rel="license noopener">CC BY-SA 4.0</a> · Version: <span id="app-version">7.3.29 beta</span></footer>
+    <footer>© <a href="https://francesco-operetto.github.io/" rel="author">Francesco Operetto</a>, 2026 · Software: <a href="#gpl-license-dialog" id="gpl-license-link" aria-haspopup="dialog">GPL-3.0-or-later</a> · Educational content: <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" rel="license noopener">CC BY-SA 4.0</a> · Version: <span id="app-version">7.3.30 beta</span></footer>
 
     <!-- ============ GPL LICENSE ============ -->
     <dialog id="gpl-license-dialog" class="license-dialog" aria-labelledby="gpl-license-title">
@@ -4078,7 +4079,7 @@ const DATASET = {
     },
     question: 'Can the robot identify the type of tile?',
     model: [
-      'A small robot is tested on a 3×3 tiled floor. From the coordinates (X, Y), it must identify whether the tile is light or dark.',
+      'A small robot performs a test on a 3×3 grid of tiles: given its (X, Y) coordinates, it must identify whether the tile is decorated or solid-colored.',
       'No examples are placed near the grout lines.',
     ],
     experiments: [
@@ -4089,7 +4090,7 @@ const DATASET = {
     ],
     observations: `<p>The 9-neuron single-layer network and the 4+4 two-layer network both have 37 parameters, but they organize them differently. On this problem, the 4+4 network can often combine the alternating regions more effectively. The advantage is not guaranteed, however, and can change with the examples, initialization, and learning rate.</p><p>If you explore the activation maps, each neuron in the 9-neuron single layer still creates a relatively simple separation of the input space. In the 4+4 network, neurons in the second hidden layer can combine responses from the first and form more intricate regions. Internal activation maps can also differ from one training run to another even when the final result is similar.</p>`,
     xLabel: 'East–west position', yLabel: 'North–south position',
-    class0: 'Dark tile', class1: 'Light tile',
+    class0: 'Solid-colored tile', class1: 'Decorated tile',
     unit: v => formatNumber(v * 3, 2, 2) + ' tiles',
     ticks: [0, 1, 2, 3].map(t => ({ position: t / 3, text: String(t) })),
     idealBoundary: {

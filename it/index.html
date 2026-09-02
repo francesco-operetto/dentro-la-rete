@@ -20,6 +20,7 @@
     
     
     
+
     <title>Dentro la rete — simulatore didattico di reti neurali e backpropagation</title>
     <!-- Icona incorporata nel file per mantenere l’app autonoma anche offline. -->
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZpZXdCb3g9JzAgMCA2NCA2NCc+CiAgPHJlY3Qgd2lkdGg9JzY0JyBoZWlnaHQ9JzY0JyByeD0nMTYnIGZpbGw9JyMxYzJiM2EnLz4KICA8cGF0aCBkPSdNIDYgNDIgUSAzMiAzOCA1OCAxNCBMIDU4IDU4IEwgNiA1OCBaJyBmaWxsPScjZTg4NzFlJy8+CiAgPHBhdGggZD0nTSA2IDYgTCA1OCA2IEwgNTggMTQgUSAzMiAzOCA2IDQyIFonIGZpbGw9JyMyZjZmZDYnLz4KICA8cGF0aCBkPSdNIDYgNDIgUSAzMiAzOCA1OCAxNCcgZmlsbD0nbm9uZScgc3Ryb2tlPScjZjVjNTE4JyBzdHJva2Utd2lkdGg9JzQuNScgc3Ryb2tlLWxpbmVjYXA9J3JvdW5kJy8+CiAgPGNpcmNsZSBjeD0nMjInIGN5PScyMCcgcj0nNCcgZmlsbD0nI2ZmZmZmZicvPgogIDxjaXJjbGUgY3g9JzQyJyBjeT0nNDQnIHI9JzQnIGZpbGw9JyNmZmZmZmYnLz4KPC9zdmc+">
@@ -2102,12 +2103,12 @@ dialog .guide-index a {
                   <span class="network-callout-text">Per cominciare: che cos’è una rete neurale?</span>
                 </summary>
                 <div class="network-intro-box">
-                <p>Una rete neurale è un modello matematico che serve a produrre previsioni. Impara da esempi già risolti, cioè casi in cui, insieme ai valori di ingresso, chiamati <b>input</b>, è noto anche il risultato, e approssima così la regola che lega gli input al risultato, per poi applicarla a casi nuovi. Lo fa trasformando gli input in uno o più valori di uscita, chiamati <b>output</b>, dai quali si ricava la previsione: per esempio una classe oppure un valore numerico. Per realizzare questa trasformazione, la rete collega semplici unità di calcolo chiamate <b>neuroni</b>. Nonostante il nome sia ispirato alla biologia, in questo contesto si tratta semplicemente di unità matematiche connesse tra loro. Ogni neurone elabora gli ingressi e produce un valore chiamato <b>attivazione</b>.</p>
+                <p>Una rete neurale è un modello matematico che serve a produrre previsioni. Impara da esempi già risolti, cioè casi in cui, insieme ai valori di ingresso, chiamati <b>input</b>, è noto anche il risultato, e approssima così la regola che lega gli input al risultato, per poi applicarla a casi nuovi. Lo fa trasformando gli input in uno o più valori di uscita, chiamati <b>output</b>, dai quali si ricava la previsione: per esempio una classe oppure un valore numerico. Per realizzare questa trasformazione, la rete collega semplici unità di calcolo chiamate <b>neuroni</b>. Nonostante il nome sia ispirato alla biologia, in questo contesto si tratta semplicemente di unità matematiche connesse tra loro. Ogni neurone degli strati nascosti o dello strato di uscita combina i valori che riceve e calcola un valore intermedio <span class="numeric">z</span>.</p>
                 <p>I neuroni sono organizzati in <b>strati</b>. Il primo è lo strato di ingresso, che riceve i dati; l’ultimo è lo strato di uscita, che produce gli <b>output</b>. Gli eventuali strati intermedi sono detti <b>nascosti</b> perché le loro attivazioni restano valori interni alla rete.</p>
                 <p>Nello <b>strato di ingresso</b> le attivazioni coincidono con i valori di input forniti alla rete, dopo la normalizzazione descritta qui accanto.</p>
                 <p>Ogni neurone di uno strato nascosto o dello strato di uscita riceve le attivazioni prodotte dai neuroni dello strato precedente. Indichiamo queste attivazioni con <span class="numeric">a<sub>1</sub>, a<sub>2</sub>, …</span> e i <b>pesi</b> delle rispettive connessioni con <span class="numeric">w<sub>1</sub>, w<sub>2</sub>, …</span>. Il neurone moltiplica ogni attivazione per il peso della connessione che la trasporta, somma i risultati e aggiunge un <b>bias</b> <span class="numeric">b</span>:</p>
                 <div class="normalization-formula">z = w<sub>1</sub>a<sub>1</sub> + w<sub>2</sub>a<sub>2</sub> + … + b = Σ<sub>i</sub> w<sub>i</sub>a<sub>i</sub> + b</div>
-                <p>Il valore, positivo o negativo, di ciascun peso stabilisce come l’attivazione trasmessa dalla connessione influisce sul neurone. Il bias è un termine aggiuntivo che trasla il valore di ingresso complessivo <span class="numeric">z</span> del neurone. Questo valore viene quindi trasformato dalla <b>funzione di attivazione</b> <span class="numeric">f</span>:</p>
+                <p>Il valore, positivo o negativo, di ciascun peso stabilisce come l’attivazione trasmessa dalla connessione influisce sul neurone. Il bias è un termine aggiuntivo che trasla il valore di ingresso complessivo <span class="numeric">z</span> del neurone. La <b>funzione di attivazione</b> <span class="numeric">f</span> trasforma quindi <span class="numeric">z</span> nell’attivazione <span class="numeric">a</span> del neurone:</p>
                 <div class="normalization-formula">a = f(z)</div>
                 <p>Le funzioni disponibili sono descritte nel riquadro <b>Guida alle attivazioni</b>, nella scheda <b>Comandi</b>.</p>
                 <p>Negli strati nascosti, una funzione di attivazione non lineare permette alla rete di rappresentare relazioni e confini più complessi di una retta. Senza questa componente, anche aggiungendo più strati nascosti la rete potrebbe costruire solo confini di decisione lineari, cioè rettilinei quando ciascun esempio è rappresentato da due valori di input.</p>
@@ -2640,7 +2641,7 @@ dialog .guide-index a {
 
     </main>
 
-    <footer>© <a href="https://francesco-operetto.github.io/" rel="author">Francesco Operetto</a>, 2026 · Software: <a href="#gpl-license-dialog" id="gpl-license-link" aria-haspopup="dialog">GPL-3.0-or-later</a> · Contenuti didattici: <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" rel="license noopener">CC BY-SA 4.0</a> · Versione: <span id="app-version">7.3.29 beta</span></footer>
+    <footer>© <a href="https://francesco-operetto.github.io/" rel="author">Francesco Operetto</a>, 2026 · Software: <a href="#gpl-license-dialog" id="gpl-license-link" aria-haspopup="dialog">GPL-3.0-or-later</a> · Contenuti didattici: <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" rel="license noopener">CC BY-SA 4.0</a> · Versione: <span id="app-version">7.3.30 beta</span></footer>
 
     <!-- ============ LICENZA GPL ============ -->
     <dialog id="gpl-license-dialog" class="license-dialog" aria-labelledby="gpl-license-title">
@@ -4083,7 +4084,7 @@ const DATASET = {
     },
     question: 'Il robot riuscirà a riconoscere il tipo di mattonella?',
     model: [
-      'Un piccolo robot esegue un test su un pavimento a griglia 3×3: dalle coordinate (X, Y) deve riconoscere se la mattonella è chiara o scura.',
+      'Un piccolo robot esegue un test su un pavimento a griglia 3×3: dalle coordinate (X, Y) deve riconoscere se la mattonella è decorata o a tinta unita.',
       'Non sono presenti esempi in prossimità delle fughe.',
     ],
     experiments: [
@@ -4094,7 +4095,7 @@ const DATASET = {
     ],
     observations: `<p>Le reti con 9 neuroni in un solo strato e con 4+4 neuroni in due strati hanno entrambe 37 parametri, ma li organizzano in modo diverso. In questo problema la rete 4+4 riesce spesso a comporre meglio le regioni alternate; il vantaggio non è però automatico e può cambiare con gli esempi, con l'inizializzazione e con il tasso di apprendimento.</p><p>Se esplori le mappe delle attivazioni, nella rete con 9 neuroni in un solo strato ogni neurone costruisce ancora una separazione semplice del dominio. Nella rete 4+4, i neuroni del secondo strato possono combinare le risposte del primo e produrre regioni più articolate. Le mappe interne possono inoltre cambiare tra un allenamento e l’altro anche quando il risultato finale è simile.</p>`,
     xLabel: 'Posizione est-ovest', yLabel: 'Posizione nord-sud',
-    class0: 'Mattonella scura', class1: 'Mattonella chiara',
+    class0: 'Mattonella a tinta unita', class1: 'Mattonella decorata',
     unit: v => formatNumber(v * 3, 2, 2) + ' mattonelle',
     ticks: [0, 1, 2, 3].map(t => ({ position: t / 3, text: String(t) })),
     idealBoundary: {

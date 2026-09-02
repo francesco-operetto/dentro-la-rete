@@ -1,6 +1,6 @@
 # Dentro la rete / Inside the Network
 
-**Versione / Version: 7.3.29 beta**
+**Versione / Version: 7.3.30 beta**
 
 [![Numerical validation](https://github.com/francesco-operetto/dentro-la-rete/actions/workflows/numerical-validation.yml/badge.svg)](https://github.com/francesco-operetto/dentro-la-rete/actions/workflows/numerical-validation.yml)
 
@@ -60,6 +60,22 @@ The root `index.html` is a bilingual landing page for choosing the language.
 - import of classification datasets in CSV/TSV format;
 - reproducible experiments through a fixed random seed.
 
+## Approfondimenti sugli algoritmi / Algorithm notes
+
+La cartella [`docs/algorithms/`](docs/algorithms/) contiene due schede di approfondimento che collegano la derivazione matematica della **backpropagation** e della **discesa del gradiente** alla loro implementazione nell’applicazione:
+
+- [Backpropagation e discesa del gradiente — IT](docs/algorithms/backpropagation_e_discesa_del_gradiente_it.pdf)
+- [Backpropagation and Gradient Descent — EN](docs/algorithms/backpropagation_and_gradient_descent_en.pdf)
+
+Le schede sono distribuite secondo la licenza **CC BY-SA 4.0** e sono versionate insieme al repository mantenendo nomi di file stabili.
+
+The [`docs/algorithms/`](docs/algorithms/) folder contains two companion notes connecting the mathematical derivation of **backpropagation** and **gradient descent** to their implementation in the application:
+
+- [Backpropagation e discesa del gradiente — IT](docs/algorithms/backpropagation_e_discesa_del_gradiente_it.pdf)
+- [Backpropagation and Gradient Descent — EN](docs/algorithms/backpropagation_and_gradient_descent_en.pdf)
+
+The notes are released under **CC BY-SA 4.0** and are versioned with the repository while keeping stable filenames.
+
 ## Dataset di esempio per l’importazione / Example import dataset
 
 La cartella [`examples/import/`](examples/import/) contiene un dataset sintetico CSV con **2000 esempi, 9 input e 6 classi**, pensato per provare la funzione di importazione vicino ai limiti supportati dall’applicazione. Il file usa scale numeriche molto diverse fra le colonne, così da esercitare anche la normalizzazione eseguita durante l’importazione. La documentazione bilingue descrive struttura, generazione e controlli effettuati.
@@ -105,6 +121,10 @@ dentro-la-rete/
 │   └── import/
 │       ├── README.md
 │       └── test_import_9_input_6_classi_2000_difficolta_intermedia.csv
+├── docs/
+│   └── algorithms/
+│       ├── backpropagation_e_discesa_del_gradiente_it.pdf
+│       └── backpropagation_and_gradient_descent_en.pdf
 ├── tests/
 │   ├── README.md
 │   ├── generate_fixtures.mjs
@@ -151,6 +171,6 @@ Code and texts were developed and revised with the assistance of AI tools.
 
 ## Stato del progetto / Project status
 
-La versione corrente è **7.3.28 beta**.
+La versione corrente è **7.3.30 beta**.
 
-The current version is **7.3.28 beta**.
+The current version is **7.3.30 beta**.
