@@ -21,6 +21,7 @@
     
     
 
+    
     <title>Inside the Network — interactive neural network and backpropagation simulator</title>
     <!-- Embedded icon so the app remains fully self-contained and works offline. -->
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZpZXdCb3g9JzAgMCA2NCA2NCc+CiAgPHJlY3Qgd2lkdGg9JzY0JyBoZWlnaHQ9JzY0JyByeD0nMTYnIGZpbGw9JyMxYzJiM2EnLz4KICA8cGF0aCBkPSdNIDYgNDIgUSAzMiAzOCA1OCAxNCBMIDU4IDU4IEwgNiA1OCBaJyBmaWxsPScjZTg4NzFlJy8+CiAgPHBhdGggZD0nTSA2IDYgTCA1OCA2IEwgNTggMTQgUSAzMiAzOCA2IDQyIFonIGZpbGw9JyMyZjZmZDYnLz4KICA8cGF0aCBkPSdNIDYgNDIgUSAzMiAzOCA1OCAxNCcgZmlsbD0nbm9uZScgc3Ryb2tlPScjZjVjNTE4JyBzdHJva2Utd2lkdGg9JzQuNScgc3Ryb2tlLWxpbmVjYXA9J3JvdW5kJy8+CiAgPGNpcmNsZSBjeD0nMjInIGN5PScyMCcgcj0nNCcgZmlsbD0nI2ZmZmZmZicvPgogIDxjaXJjbGUgY3g9JzQyJyBjeT0nNDQnIHI9JzQnIGZpbGw9JyNmZmZmZmYnLz4KPC9zdmc+">
@@ -92,6 +93,11 @@
 }
 
 * { box-sizing: border-box; }
+
+.numeric {
+  font-family: var(--numeric-font);
+  font-size: 0.95em;
+}
 
 /* Superscripts and subscripts use the same size and vertical alignment throughout the HTML. */
 sub,
@@ -1377,7 +1383,7 @@ button:disabled { opacity: 0.45; cursor: default; }
 .phase.active { opacity: 1; background: var(--light-highlight); border-color: var(--ink); color: var(--ink); }
 .phase.done { opacity: 0.85; color: var(--ink); }
 .inspector-text { font-size: 14px; line-height: 1.6; }
-.inspector-text .numeric { font-family: var(--numeric-font); font-size: 13.2px; }
+.inspector-text .numeric { font-size: 13.2px; }
 .formula {
   font-family: var(--numeric-font); font-size: 13.2px; line-height: 1.7;
   background: var(--paper); border: 1px solid var(--light-border); border-radius: 7px;
@@ -1913,7 +1919,6 @@ dialog h3 {
   color: var(--pencil); margin: 20px 0 6px;
 }
 dialog p, dialog li { margin: 6px 0; }
-dialog .numeric { font-family: var(--numeric-font); font-size: 0.95em; }
 dialog ol, dialog ul { padding-left: 22px; margin: 6px 0; }
 dialog .dialog-close-button { float: right; margin-left: 12px; }
 dialog h4 {
@@ -2106,7 +2111,7 @@ dialog .guide-index a {
                 <p>Neurons are arranged in <b>layers</b>. The first is the input layer, which receives the data; the last is the output layer, which produces the <b>outputs</b>. Any intermediate layers are called <b>hidden layers</b> because their activations remain internal to the network.</p>
                 <p>In the <b>input layer</b>, the activations are simply the input values supplied to the network after the normalization described below.</p>
                 <p>Each neuron in a hidden or output layer receives the activations produced by the previous layer. We denote these activations by <span class="numeric">a<sub>1</sub>, a<sub>2</sub>, …</span> and the <b>weights</b> of the corresponding connections by <span class="numeric">w<sub>1</sub>, w<sub>2</sub>, …</span>. The neuron multiplies each activation by the weight of its connection, adds the results, and then adds a <b>bias</b> <span class="numeric">b</span>:</p>
-                <div class="normalization-formula">z = w<sub>1</sub>a<sub>1</sub> + w<sub>2</sub>a<sub>2</sub> + … + b = Σ<sub>i</sub> w<sub>i</sub>a<sub>i</sub> + b</div>
+                <div class="normalization-formula">z = w<sub>1</sub>a<sub>1</sub> + w<sub>2</sub>a<sub>2</sub> + … + b = ∑<sub>i</sub> w<sub>i</sub>a<sub>i</sub> + b</div>
                 <p>The sign and size of each weight determine how the activation carried by that connection affects the neuron. The bias is an additional term that shifts the neuron’s combined input <span class="numeric">z</span>. The <b>activation function</b> <span class="numeric">f</span> then transforms <span class="numeric">z</span> into the neuron’s activation <span class="numeric">a</span>:</p>
                 <div class="normalization-formula">a = f(z)</div>
                 <p>The available functions are described in the <b>Activation functions guide</b> under <b>Controls</b>.</p>
@@ -2305,7 +2310,7 @@ dialog .guide-index a {
                         <h3>Softmax</h3>
                         <span class="current-usage hidden"></span>
                       </div>
-                      <div class="formula-activation">p<sub>i</sub> = e<sup>z<sub>i</sub></sup> / Σ<sub>j</sub> e<sup>z<sub>j</sub></sup></div>
+                      <div class="formula-activation">p<sub>i</sub> = e<sup>z<sub>i</sub></sup> / ∑<sub>j</sub> e<sup>z<sub>j</sub></sup></div>
                       <p><b>Property:</b> softmax is a multivariable function: it takes the output-neuron values <span class="numeric">z<sub>1</sub>, …, z<sub>k</sub></span> together and returns the same number of values between 0 and 1 whose sum is 1. Each result depends on all the inputs.</p>
                       <div class="softmax-example">
                         <div><b>Example with three classes</b><br>
@@ -2332,7 +2337,7 @@ dialog .guide-index a {
               <button id="button-reset" title="Recreate the network; with a fixed seed, restore the same initial weights">⟲ Reset network</button>
             </div>
             <div class="controls-row training-parameters-row">
-              <label><span class="control-name">Learning rate η</span>
+              <label><span class="control-name">Learning rate <span class="numeric">η</span></span>
                 <input type="range" id="range-eta" min="0" max="6" step="1" value="3">
                 <span class="value-slider" id="value-eta">0.3</span>
               </label>
@@ -2640,7 +2645,7 @@ dialog .guide-index a {
 
     </main>
 
-    <footer>© <a href="https://francesco-operetto.github.io/" rel="author">Francesco Operetto</a>, 2026 · Software: <a href="#gpl-license-dialog" id="gpl-license-link" aria-haspopup="dialog">GPL-3.0-or-later</a> · Educational content: <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" rel="license noopener">CC BY-SA 4.0</a> · Version: <span id="app-version">7.3.30 beta</span></footer>
+    <footer>© <a href="https://francesco-operetto.github.io/" rel="author">Francesco Operetto</a>, 2026 · Software: <a href="#gpl-license-dialog" id="gpl-license-link" aria-haspopup="dialog">GPL-3.0-or-later</a> · Educational content: <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" rel="license noopener">CC BY-SA 4.0</a> · Version: <span id="app-version">7.3.31 beta</span></footer>
 
     <!-- ============ GPL LICENSE ============ -->
     <dialog id="gpl-license-dialog" class="license-dialog" aria-labelledby="gpl-license-title">
@@ -3460,7 +3465,7 @@ Public License instead of this License.  But first, please read
         <p><span class="key-label">Run one epoch</span> completes the current epoch, or processes the entire training set once if a new epoch has just started. One complete pass through the training set is called an <i>epoch</i>. Before the next epoch, the order of the training examples is shuffled.</p>
         <p><span class="key-label">One example at a time</span> breaks the network’s work on a single example into three stages: prediction, loss calculation, and parameter update.</p>
         <p><span class="key-label">⟲ Reset network</span> recreates the network with newly initialized weights and biases. Changing the architecture or activation function also restarts training on the same dataset.</p>
-        <p>The <b>Learning rate η</b> controls the size of the updates applied to weights and biases. The formulas are explained in the weight and bias inspection panels.</p>
+        <p>The <b>Learning rate <span class="numeric">η</span></b> controls the size of the updates applied to weights and biases. The formulas are explained in the weight and bias inspection panels.</p>
         <p><b>Speed</b> controls how many epochs per second the app attempts to run. If the device cannot keep up with the requested speed, the app automatically reduces it and displays a warning.</p>
         <p>For hidden layers, you can choose tanh, sigmoid, or ReLU and compare them while keeping the network and data unchanged. The <span class="key-label">Activation functions guide</span> brings together their formulas, graphs, and main properties.</p>
         <p>The <b>seed</b> initializes the random number generator. Keeping the seed fixed makes experiments reproducible. With <b>Fixed seed</b> enabled, <span class="key-label">⟲ Reset network</span> reuses the same initial weights and biases.</p>
@@ -3887,7 +3892,7 @@ const DATASET = {
     question: 'You are some distance from the bus stop and the bus leaves in a few minutes. Will you make it?',
     model: [
       'In this example, assume you can move at 80 m/min.',
-      'If the bus leaves in T minutes, you can cover at most 80·T meters. You catch the bus when the distance D is less than 80·T; the decision boundary is D = 80·T.',
+      'If the bus leaves in <span class="numeric">T</span> minutes, you can cover at most <span class="numeric">80·T</span> meters. You catch the bus when the distance <span class="numeric">D</span> is less than <span class="numeric">80·T</span>; the decision boundary is <span class="numeric">D = 80·T</span>.',
     ],
     experiments: ['Use 0 hidden layers and watch the learned boundary.'],
     howItWorks: [
@@ -4079,12 +4084,12 @@ const DATASET = {
     },
     question: 'Can the robot identify the type of tile?',
     model: [
-      'A small robot performs a test on a 3×3 grid of tiles: given its (X, Y) coordinates, it must identify whether the tile is decorated or solid-colored.',
+      'A small robot performs a test on a 3×3 grid of tiles: given its <span class="numeric">(X, Y)</span> coordinates, it must identify whether the tile is decorated or solid-colored.',
       'No examples are placed near the grout lines.',
     ],
     experiments: [
       'Compare 1 hidden layer with 9 neurons against 2 hidden layers with 4 neurons each; both networks have 37 trainable parameters.',
-      'Compare classification accuracy, loss, boundary shape, and sensitivity to the learning rate. Try η = 0.3 and η = 0.1.',
+      'Compare classification accuracy, loss, boundary shape, and sensitivity to the learning rate. Try <span class="numeric">η = 0.3</span> and <span class="numeric">η = 0.1</span>.',
       'Repeat the comparison with new data samples.',
       '<b>Optional deeper look.</b> After training, pause the network, select a neuron, and open its map in the <b>Activation</b> tab under <b>Network Internals</b>. Then use <b>Compare activation maps for all neurons</b> to compare the network with 9 neurons in one layer against the 4+4 network with two hidden layers.',
     ],
@@ -8850,7 +8855,7 @@ function updateNodeInspector() {
       `${zCurrent} = ${terms.join(' + ')} + ${biasCurrent}\n` +
       `  = ${numbers.join(' + ')} + (${fmt(S.network.bias[l - 1][j])})\n` +
       `  = ${fmt(z, 3)}\n` +
-      `${valueCurrent} = e<sup>${zCurrent}</sup> / Σ<sub>k</sub> e<sup>z<sub>k</sub></sup> = ${fmt(a, 3)}`;
+      `${valueCurrent} = e<sup>${zCurrent}</sup> / ∑<sub>k</sub> e<sup>z<sub>k</sub></sup> = ${fmt(a, 3)}`;
   } else if (f) {
     const z = f.zs[l][j];
     const a = f.as[l][j];
@@ -8864,7 +8869,7 @@ function updateNodeInspector() {
       `${zCurrent} = ${terms.join(' + ')} + ${biasCurrent}\n` +
       `With the current parameters:\n` +
       `${zCurrent} = ${numbers.join(' + ')} + (${fmt(S.network.bias[l - 1][j])})\n` +
-      `${valueCurrent} = e<sup>${zCurrent}</sup> / Σ<sub>k</sub> e<sup>z<sub>k</sub></sup>\n` +
+      `${valueCurrent} = e<sup>${zCurrent}</sup> / ∑<sub>k</sub> e<sup>z<sub>k</sub></sup>\n` +
       `No input is currently shown: these values have not been calculated yet.`;
   } else {
     refs.formula.innerHTML =
@@ -8928,7 +8933,7 @@ function updateNodeInspector() {
       ruleChainDelta +
       `<p>Applying the chain rule shows that, in a hidden neuron, <span class="numeric">dE/da</span> ` +
       `collects contributions from the neurons in the next layer. Therefore:</p>` +
-      `<div class="formula">δ = f′(z) · Σ(w · δ<sub>next</sub>)</div>` +
+      `<div class="formula">δ = f′(z) · ∑(w · δ<sub>next</sub>)</div>` +
       `<p>The sum contains one term for each neuron in the next layer. In each term, ` +
       `<span class="numeric">w</span> is the weight of the connection to that neuron and ` +
       `<span class="numeric">δ<sub>next</sub></span> is its error term.</p>` +
@@ -8956,7 +8961,7 @@ dE/db = δ</div>` +
         `<span class="numeric">δ<sub>${j + 1}</sub> = ${fmt(detail.stepDetails.delta[L][j], 4)}</span>.`) +
       `</p>` +
       `<p>Backpropagation starts from these terms. For hidden neurons:</p>` +
-      `<div class="formula">δ = f′(z) · Σ(w · δ<sub>next</sub>)</div>` +
+      `<div class="formula">δ = f′(z) · ∑(w · δ<sub>next</sub>)</div>` +
       `<p>Once <span class="numeric">δ</span> is known, the derivatives of the incoming weights and bias are:</p>` +
       `<div class="formula">dE/dw = δ·a
 dE/db = δ</div>` +
@@ -8969,7 +8974,7 @@ dE/db = δ</div>` +
       `<span class="numeric">dE/da = a − y</span>:</p>` +
       `<div class="formula">${isRegressionProblem() ? 'δ = a − y, because the derivative of the linear function is 1' : 'δ = (a − y)·f′(z)'}</div>` +
       `<p>Backpropagation starts from this value. For hidden neurons:</p>` +
-      `<div class="formula">δ = f′(z) · Σ(w · δ<sub>next</sub>)</div>` +
+      `<div class="formula">δ = f′(z) · ∑(w · δ<sub>next</sub>)</div>` +
       `<p>The sum contains one term for each neuron in the next layer. In each term, ` +
       `<span class="numeric">w</span> is the weight of the connection to that neuron and ` +
       `<span class="numeric">δ<sub>next</sub></span> is its error term.</p>` +

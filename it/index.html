@@ -21,6 +21,7 @@
     
     
 
+    
     <title>Dentro la rete — simulatore didattico di reti neurali e backpropagation</title>
     <!-- Icona incorporata nel file per mantenere l’app autonoma anche offline. -->
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZpZXdCb3g9JzAgMCA2NCA2NCc+CiAgPHJlY3Qgd2lkdGg9JzY0JyBoZWlnaHQ9JzY0JyByeD0nMTYnIGZpbGw9JyMxYzJiM2EnLz4KICA8cGF0aCBkPSdNIDYgNDIgUSAzMiAzOCA1OCAxNCBMIDU4IDU4IEwgNiA1OCBaJyBmaWxsPScjZTg4NzFlJy8+CiAgPHBhdGggZD0nTSA2IDYgTCA1OCA2IEwgNTggMTQgUSAzMiAzOCA2IDQyIFonIGZpbGw9JyMyZjZmZDYnLz4KICA8cGF0aCBkPSdNIDYgNDIgUSAzMiAzOCA1OCAxNCcgZmlsbD0nbm9uZScgc3Ryb2tlPScjZjVjNTE4JyBzdHJva2Utd2lkdGg9JzQuNScgc3Ryb2tlLWxpbmVjYXA9J3JvdW5kJy8+CiAgPGNpcmNsZSBjeD0nMjInIGN5PScyMCcgcj0nNCcgZmlsbD0nI2ZmZmZmZicvPgogIDxjaXJjbGUgY3g9JzQyJyBjeT0nNDQnIHI9JzQnIGZpbGw9JyNmZmZmZmYnLz4KPC9zdmc+">
@@ -92,6 +93,11 @@
 }
 
 * { box-sizing: border-box; }
+
+.numeric {
+  font-family: var(--numeric-font);
+  font-size: 0.95em;
+}
 
 /* Apici e pedici condividono dimensione e posizione in tutta la parte HTML. */
 sub,
@@ -1378,7 +1384,7 @@ button:disabled { opacity: 0.45; cursor: default; }
 .phase.active { opacity: 1; background: var(--light-highlight); border-color: var(--ink); color: var(--ink); }
 .phase.done { opacity: 0.85; color: var(--ink); }
 .inspector-text { font-size: 14px; line-height: 1.6; }
-.inspector-text .numeric { font-family: var(--numeric-font); font-size: 13.2px; }
+.inspector-text .numeric { font-size: 13.2px; }
 .formula {
   font-family: var(--numeric-font); font-size: 13.2px; line-height: 1.7;
   background: var(--paper); border: 1px solid var(--light-border); border-radius: 7px;
@@ -1914,7 +1920,6 @@ dialog h3 {
   color: var(--pencil); margin: 20px 0 6px;
 }
 dialog p, dialog li { margin: 6px 0; }
-dialog .numeric { font-family: var(--numeric-font); font-size: 0.95em; }
 dialog ol, dialog ul { padding-left: 22px; margin: 6px 0; }
 dialog .dialog-close-button { float: right; margin-left: 12px; }
 dialog h4 {
@@ -2107,7 +2112,7 @@ dialog .guide-index a {
                 <p>I neuroni sono organizzati in <b>strati</b>. Il primo è lo strato di ingresso, che riceve i dati; l’ultimo è lo strato di uscita, che produce gli <b>output</b>. Gli eventuali strati intermedi sono detti <b>nascosti</b> perché le loro attivazioni restano valori interni alla rete.</p>
                 <p>Nello <b>strato di ingresso</b> le attivazioni coincidono con i valori di input forniti alla rete, dopo la normalizzazione descritta qui accanto.</p>
                 <p>Ogni neurone di uno strato nascosto o dello strato di uscita riceve le attivazioni prodotte dai neuroni dello strato precedente. Indichiamo queste attivazioni con <span class="numeric">a<sub>1</sub>, a<sub>2</sub>, …</span> e i <b>pesi</b> delle rispettive connessioni con <span class="numeric">w<sub>1</sub>, w<sub>2</sub>, …</span>. Il neurone moltiplica ogni attivazione per il peso della connessione che la trasporta, somma i risultati e aggiunge un <b>bias</b> <span class="numeric">b</span>:</p>
-                <div class="normalization-formula">z = w<sub>1</sub>a<sub>1</sub> + w<sub>2</sub>a<sub>2</sub> + … + b = Σ<sub>i</sub> w<sub>i</sub>a<sub>i</sub> + b</div>
+                <div class="normalization-formula">z = w<sub>1</sub>a<sub>1</sub> + w<sub>2</sub>a<sub>2</sub> + … + b = ∑<sub>i</sub> w<sub>i</sub>a<sub>i</sub> + b</div>
                 <p>Il valore, positivo o negativo, di ciascun peso stabilisce come l’attivazione trasmessa dalla connessione influisce sul neurone. Il bias è un termine aggiuntivo che trasla il valore di ingresso complessivo <span class="numeric">z</span> del neurone. La <b>funzione di attivazione</b> <span class="numeric">f</span> trasforma quindi <span class="numeric">z</span> nell’attivazione <span class="numeric">a</span> del neurone:</p>
                 <div class="normalization-formula">a = f(z)</div>
                 <p>Le funzioni disponibili sono descritte nel riquadro <b>Guida alle attivazioni</b>, nella scheda <b>Comandi</b>.</p>
@@ -2306,7 +2311,7 @@ dialog .guide-index a {
                         <h3>Softmax</h3>
                         <span class="current-usage hidden"></span>
                       </div>
-                      <div class="formula-activation">p<sub>i</sub> = e<sup>z<sub>i</sub></sup> / Σ<sub>j</sub> e<sup>z<sub>j</sub></sup></div>
+                      <div class="formula-activation">p<sub>i</sub> = e<sup>z<sub>i</sub></sup> / ∑<sub>j</sub> e<sup>z<sub>j</sub></sup></div>
                       <p><b>Proprietà:</b> è una funzione a più variabili: riceve contemporaneamente i valori <span class="numeric">z<sub>1</sub>, …, z<sub>k</sub></span> dei neuroni di uscita e restituisce altrettanti valori tra 0 e 1, la cui somma è 1. Ogni valore dipende da tutti i valori in ingresso.</p>
                       <div class="softmax-example">
                         <div><b>Esempio con tre classi</b><br>
@@ -2333,7 +2338,7 @@ dialog .guide-index a {
               <button id="button-reset" title="Ricrea la rete; con il seme fisso ripristina gli stessi pesi iniziali">⟲ Riparti</button>
             </div>
             <div class="controls-row training-parameters-row">
-              <label><span class="control-name">Tasso di apprendimento η</span>
+              <label><span class="control-name">Tasso di apprendimento <span class="numeric">η</span></span>
                 <input type="range" id="range-eta" min="0" max="6" step="1" value="3">
                 <span class="value-slider" id="value-eta">0,3</span>
               </label>
@@ -2641,7 +2646,7 @@ dialog .guide-index a {
 
     </main>
 
-    <footer>© <a href="https://francesco-operetto.github.io/" rel="author">Francesco Operetto</a>, 2026 · Software: <a href="#gpl-license-dialog" id="gpl-license-link" aria-haspopup="dialog">GPL-3.0-or-later</a> · Contenuti didattici: <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" rel="license noopener">CC BY-SA 4.0</a> · Versione: <span id="app-version">7.3.30 beta</span></footer>
+    <footer>© <a href="https://francesco-operetto.github.io/" rel="author">Francesco Operetto</a>, 2026 · Software: <a href="#gpl-license-dialog" id="gpl-license-link" aria-haspopup="dialog">GPL-3.0-or-later</a> · Contenuti didattici: <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" rel="license noopener">CC BY-SA 4.0</a> · Versione: <span id="app-version">7.3.31 beta</span></footer>
 
     <!-- ============ LICENZA GPL ============ -->
     <dialog id="gpl-license-dialog" class="license-dialog" aria-labelledby="gpl-license-title">
@@ -3461,7 +3466,7 @@ Public License instead of this License.  But first, please read
         <p><span class="key-label">Un giro completo</span> termina il giro già iniziato oppure, se il giro è appena cominciato, elabora una volta tutti gli esempi di allenamento. Un passaggio completo è chiamato <i>epoca</i> o <i>epoch</i>. Prima del giro successivo, l'ordine degli esempi viene rimescolato.</p>
         <p><span class="key-label">Un dato alla volta</span> separa il lavoro della rete su un singolo dato in tre fasi: previsione, calcolo dell&rsquo;errore e aggiornamento dei parametri.</p>
         <p><span class="key-label">⟲ Riparti</span> ricrea la rete, inizializzando nuovamente pesi e bias. Anche una modifica all&rsquo;architettura o alla funzione di attivazione fa ripartire l&rsquo;allenamento sullo stesso insieme di dati.</p>
-        <p>Il <b>Tasso di apprendimento η</b> stabilisce l&rsquo;ampiezza degli aggiornamenti di pesi e bias. Le formule sono spiegate nei pannelli di ispezione di pesi e bias.</p>
+        <p>Il <b>Tasso di apprendimento <span class="numeric">η</span></b> stabilisce l&rsquo;ampiezza degli aggiornamenti di pesi e bias. Le formule sono spiegate nei pannelli di ispezione di pesi e bias.</p>
         <p>Il controllo <b>Velocità</b> cambia soltanto il numero di giri eseguiti ogni secondo; se il dispositivo non riesce a mantenere la velocità richiesta, questa viene ridotta automaticamente e compare un avviso.</p>
         <p>Come funzione di attivazione per gli strati nascosti, puoi selezionare tanh, sigmoide o ReLU e confrontarle mantenendo invariati rete e dati. <span class="key-label">Guida alle attivazioni</span> ne raccoglie formule, grafici e proprietà.</p>
         <p>Il <b>seme</b> è il valore di partenza del generatore di numeri casuali e permette di rendere ripetibili gli esperimenti. Con <b>Seme fisso</b> attivo, <span class="key-label">⟲ Riparti</span> riutilizza gli stessi pesi e bias iniziali.</p>
@@ -3892,7 +3897,7 @@ const DATASET = {
     question: 'Sei a una certa distanza dalla fermata e il bus parte tra pochi minuti: riuscirò a prenderlo?',
     model: [
       'Nel nostro esempio supponiamo che la velocità sia 80 m/min.',
-      'Se mancano T minuti, puoi percorrere al massimo 80·T metri. Prendi il bus quando la distanza D è minore di 80·T; la retta di confine è D = 80·T.',
+      'Se mancano <span class="numeric">T</span> minuti, puoi percorrere al massimo <span class="numeric">80·T</span> metri. Prendi il bus quando la distanza <span class="numeric">D</span> è minore di <span class="numeric">80·T</span>; la retta di confine è <span class="numeric">D = 80·T</span>.',
     ],
     experiments: ['Imposta 0 strati nascosti e osserva il confine appreso.'],
     howItWorks: [
@@ -4084,12 +4089,12 @@ const DATASET = {
     },
     question: 'Il robot riuscirà a riconoscere il tipo di mattonella?',
     model: [
-      'Un piccolo robot esegue un test su un pavimento a griglia 3×3: dalle coordinate (X, Y) deve riconoscere se la mattonella è decorata o a tinta unita.',
+      'Un piccolo robot esegue un test su un pavimento a griglia 3×3: dalle coordinate <span class="numeric">(X, Y)</span> deve riconoscere se la mattonella è decorata o a tinta unita.',
       'Non sono presenti esempi in prossimità delle fughe.',
     ],
     experiments: [
       'Confronta 1 strato da 9 neuroni con 2 strati da 4 neuroni: entrambe le reti hanno 37 parametri allenabili.',
-      'Osserva classificazioni corrette, errore, forma del confine e sensibilità al tasso di apprendimento. Prova η = 0,3 e η = 0,1.',
+      'Osserva classificazioni corrette, errore, forma del confine e sensibilità al tasso di apprendimento. Prova <span class="numeric">η = 0,3</span> e <span class="numeric">η = 0,1</span>.',
       'Ripeti il confronto con nuovi campioni di dati.',
       '<b>Approfondimento facoltativo.</b> Dopo l’allenamento, metti in pausa la rete, seleziona un neurone e, nella scheda <b>Attivazione</b> di <b>I valori interni</b>, apri la sua mappa. Usa poi <b>Confronta le mappe di tutti i neuroni</b> per osservare le differenze tra la rete con 9 neuroni in un solo strato e quella con 4+4 neuroni in due strati.',
     ],
@@ -8873,7 +8878,7 @@ function updateNodeInspector() {
       `${zCurrent} = ${terms.join(' + ')} + ${biasCurrent}\n` +
       `  = ${numbers.join(' + ')} + (${fmt(S.network.bias[l - 1][j])})\n` +
       `  = ${fmt(z, 3)}\n` +
-      `${valueCurrent} = e<sup>${zCurrent}</sup> / Σ<sub>k</sub> e<sup>z<sub>k</sub></sup> = ${fmt(a, 3)}`;
+      `${valueCurrent} = e<sup>${zCurrent}</sup> / ∑<sub>k</sub> e<sup>z<sub>k</sub></sup> = ${fmt(a, 3)}`;
   } else if (f) {
     const z = f.zs[l][j];
     const a = f.as[l][j];
@@ -8887,7 +8892,7 @@ function updateNodeInspector() {
       `${zCurrent} = ${terms.join(' + ')} + ${biasCurrent}\n` +
       `Con i parametri attuali:\n` +
       `${zCurrent} = ${numbers.join(' + ')} + (${fmt(S.network.bias[l - 1][j])})\n` +
-      `${valueCurrent} = e<sup>${zCurrent}</sup> / Σ<sub>k</sub> e<sup>z<sub>k</sub></sup>\n` +
+      `${valueCurrent} = e<sup>${zCurrent}</sup> / ∑<sub>k</sub> e<sup>z<sub>k</sub></sup>\n` +
       `Nessun input visualizzato: questi valori non sono ancora stati calcolati.`;
   } else {
     refs.formula.innerHTML =
@@ -8956,7 +8961,7 @@ function updateNodeInspector() {
       `<p>Applicando la regola della catena, si può dimostrare che, in un neurone ` +
       `nascosto, <span class="numeric">dE/da</span> raccoglie i contributi provenienti ` +
       `dai neuroni dello strato successivo. Di conseguenza:</p>` +
-      `<div class="formula">δ = f′(z) · Σ(w · δ<sub>successivo</sub>)</div>` +
+      `<div class="formula">δ = f′(z) · ∑(w · δ<sub>successivo</sub>)</div>` +
       `<p>La somma contiene un termine per ogni neurone dello strato successivo. ` +
       `In ciascun termine, <span class="numeric">w</span> è il peso della connessione verso quel ` +
       `neurone e <span class="numeric">δ<sub>successivo</sub></span> è il suo termine d’errore.</p>` +
@@ -8985,7 +8990,7 @@ dE/db = δ</div>` +
         `<span class="numeric">δ<sub>${j + 1}</sub> = ${fmt(detail.stepDetails.delta[L][j], 4)}</span>.`) +
       `</p>` +
       `<p>Da questi termini comincia il calcolo all’indietro. Nei neuroni nascosti:</p>` +
-      `<div class="formula">δ = f′(z) · Σ(w · δ<sub>successivo</sub>)</div>` +
+      `<div class="formula">δ = f′(z) · ∑(w · δ<sub>successivo</sub>)</div>` +
       `<p>Una volta noto <span class="numeric">δ</span>, le derivate dei pesi in ingresso e del bias sono:</p>` +
       `<div class="formula">dE/dw = δ·a
 dE/db = δ</div>` +
@@ -8998,7 +9003,7 @@ dE/db = δ</div>` +
       `<span class="numeric">dE/da = a − y</span>:</p>` +
       `<div class="formula">${isRegressionProblem() ? 'δ = a − y, perché la derivata della funzione lineare vale 1' : 'δ = (a − y)·f′(z)'}</div>` +
       `<p>Da questo valore comincia il calcolo all’indietro. Nei neuroni nascosti:</p>` +
-      `<div class="formula">δ = f′(z) · Σ(w · δ<sub>successivo</sub>)</div>` +
+      `<div class="formula">δ = f′(z) · ∑(w · δ<sub>successivo</sub>)</div>` +
       `<p>La somma contiene un termine per ogni neurone dello strato successivo. ` +
       `In ciascun termine, <span class="numeric">w</span> è il peso della connessione verso quel ` +
       `neurone e <span class="numeric">δ<sub>successivo</sub></span> è il suo termine d’errore.</p>` +
