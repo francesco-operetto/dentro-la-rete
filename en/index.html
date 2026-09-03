@@ -22,6 +22,7 @@
     
 
     
+    
     <title>Inside the Network — interactive neural network and backpropagation simulator</title>
     <!-- Embedded icon so the app remains fully self-contained and works offline. -->
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZpZXdCb3g9JzAgMCA2NCA2NCc+CiAgPHJlY3Qgd2lkdGg9JzY0JyBoZWlnaHQ9JzY0JyByeD0nMTYnIGZpbGw9JyMxYzJiM2EnLz4KICA8cGF0aCBkPSdNIDYgNDIgUSAzMiAzOCA1OCAxNCBMIDU4IDU4IEwgNiA1OCBaJyBmaWxsPScjZTg4NzFlJy8+CiAgPHBhdGggZD0nTSA2IDYgTCA1OCA2IEwgNTggMTQgUSAzMiAzOCA2IDQyIFonIGZpbGw9JyMyZjZmZDYnLz4KICA8cGF0aCBkPSdNIDYgNDIgUSAzMiAzOCA1OCAxNCcgZmlsbD0nbm9uZScgc3Ryb2tlPScjZjVjNTE4JyBzdHJva2Utd2lkdGg9JzQuNScgc3Ryb2tlLWxpbmVjYXA9J3JvdW5kJy8+CiAgPGNpcmNsZSBjeD0nMjInIGN5PScyMCcgcj0nNCcgZmlsbD0nI2ZmZmZmZicvPgogIDxjaXJjbGUgY3g9JzQyJyBjeT0nNDQnIHI9JzQnIGZpbGw9JyNmZmZmZmYnLz4KPC9zdmc+">
@@ -2107,7 +2108,10 @@ dialog .guide-index a {
                   <span class="network-callout-text">Getting started: what is a neural network?</span>
                 </summary>
                 <div class="network-intro-box">
-                <p>A neural network is a mathematical model used to make predictions. It learns from solved examples—cases where, along with the input values, called <b>inputs</b>, the result is also known—and in this way approximates the rule linking the inputs to the result, so it can then apply it to new cases. It does this by transforming the inputs into one or more output values, called <b>outputs</b>, from which the prediction is derived: for example, a class or a numerical value. To carry out this transformation, the network connects simple computational units called <b>neurons</b>. Despite the biological-sounding name, here they are simply mathematical units connected to one another. Each neuron in a hidden or output layer combines the values it receives and computes an intermediate value <span class="numeric">z</span>.</p>
+                <p>A neural network is a mathematical model used to make predictions. It learns from solved examples, gradually approximating the rule that links the inputs to the result, and then applies that rule to new cases.</p>
+                <p>Learning means progressively adjusting the network’s internal parameters, called <b>weights</b> and <b>biases</b>, based on the training examples.</p>
+                <p>For each example, the network receives <b>inputs</b> and produces one or more <b>outputs</b>, from which a prediction is derived. By comparing the prediction with the expected result, it can determine how to adjust its parameters during training.</p>
+                <p>To carry out this transformation, the network connects simple computational units called <b>neurons</b>. Despite the biological-sounding name, here they are simply mathematical units connected to one another. Each neuron in a hidden or output layer combines the values it receives and computes an intermediate value <span class="numeric">z</span>.</p>
                 <p>Neurons are arranged in <b>layers</b>. The first is the input layer, which receives the data; the last is the output layer, which produces the <b>outputs</b>. Any intermediate layers are called <b>hidden layers</b> because their activations remain internal to the network.</p>
                 <p>In the <b>input layer</b>, the activations are simply the input values supplied to the network after the normalization described below.</p>
                 <p>Each neuron in a hidden or output layer receives the activations produced by the previous layer. We denote these activations by <span class="numeric">a<sub>1</sub>, a<sub>2</sub>, …</span> and the <b>weights</b> of the corresponding connections by <span class="numeric">w<sub>1</sub>, w<sub>2</sub>, …</span>. The neuron multiplies each activation by the weight of its connection, adds the results, and then adds a <b>bias</b> <span class="numeric">b</span>:</p>
@@ -2645,7 +2649,7 @@ dialog .guide-index a {
 
     </main>
 
-    <footer>© <a href="https://francesco-operetto.github.io/" rel="author">Francesco Operetto</a>, 2026 · Software: <a href="#gpl-license-dialog" id="gpl-license-link" aria-haspopup="dialog">GPL-3.0-or-later</a> · Educational content: <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" rel="license noopener">CC BY-SA 4.0</a> · Version: <span id="app-version">7.3.31 beta</span></footer>
+    <footer>© <a href="https://francesco-operetto.github.io/" rel="author">Francesco Operetto</a>, 2026 · Software: <a href="#gpl-license-dialog" id="gpl-license-link" aria-haspopup="dialog">GPL-3.0-or-later</a> · Educational content: <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" rel="license noopener">CC BY-SA 4.0</a> · Version: <span id="app-version">7.3.32 beta</span></footer>
 
     <!-- ============ GPL LICENSE ============ -->
     <dialog id="gpl-license-dialog" class="license-dialog" aria-labelledby="gpl-license-title">
