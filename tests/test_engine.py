@@ -9,6 +9,7 @@ from __future__ import annotations
 
 import json
 import math
+import sys
 from pathlib import Path
 from typing import Any
 
@@ -22,6 +23,7 @@ ATOL = 1e-13
 FD_RTOL = 3e-7
 FD_ATOL = 3e-9
 FD_H = 1e-6
+MIN_POSITIVE = math.ulp(0.0)  # Binary64's smallest subnormal, like Number.MIN_VALUE.
 
 # JavaScript Number is binary64, so the reference must use the same precision.
 torch.set_default_dtype(torch.float64)
@@ -111,11 +113,13 @@ class TorchReference:
 
         return zs, activations
 
-    def loss(self, outputs: torch.Tensor, y: int | float) -> torch.Tensor:
+    def loss(self, outputs: torch.Tensor, y: int | float, logits: torch.Tensor) -> torch.Tensor:
         if self.output["type"] == "multiclass":
-            # The fixtures keep the target probability above 1e-12, so this clamp
-            # mirrors the application's loss without affecting the autograd gradient.
-            return -torch.log(torch.clamp(outputs[int(y)], min=1e-12))
+            # Backpropagation uses the theoretical p - t gradient, even if the
+            # separately reported probability-based loss needs its zero guard.
+            # Do not differentiate log(clamp(softmax)): at extreme probabilities
+            # that graph can give zero, infinite, or NaN gradients.
+            return F.cross_entropy(logits.unsqueeze(0), torch.tensor([int(y)], dtype=torch.long))
         target = tensor(float(y))
         return 0.5 * (outputs[0] - target) ** 2
 
@@ -123,7 +127,7 @@ class TorchReference:
         self.zero_grad()
         zs, activations = self.forward(x_values)
         outputs = activations[-1]
-        loss = self.loss(outputs, y)
+        loss = self.loss(outputs, y, zs[-1])
         loss.backward()
 
         return {
@@ -149,7 +153,7 @@ class TorchReference:
         }
 
 
-def compare_step(reference: TorchReference, result: dict[str, Any], fixture_step: dict[str, Any], learning_rate: float, prefix: str) -> None:
+def compare_step(reference: TorchReference, result: dict[str, Any], fixture_step: dict[str, Any], learning_rate: float, prefix: str, *, reported_loss: float | None = None) -> None:
     for layer in range(1, len(result["zs"])):
         assert_tensor_close(result["zs"][layer], fixture_step["zs"][layer], f"{prefix}: z layer {layer}")
 
@@ -157,7 +161,8 @@ def compare_step(reference: TorchReference, result: dict[str, Any], fixture_step
         assert_tensor_close(activation, fixture_step["as"][layer], f"{prefix}: activation layer {layer}")
 
     assert_tensor_close(result["outputs"], fixture_step["outputs"], f"{prefix}: outputs")
-    assert_scalar_close(float(result["loss"].detach()), fixture_step["err"], f"{prefix}: loss")
+    expected_loss = float(result["loss"].detach()) if reported_loss is None else reported_loss
+    assert_scalar_close(expected_loss, fixture_step["err"], f"{prefix}: loss")
 
     for layer in range(1, len(result["delta"])):
         assert_tensor_close(result["delta"][layer], fixture_step["delta"][layer], f"{prefix}: delta layer {layer}")
@@ -179,8 +184,8 @@ def compare_parameters(actual: dict[str, Any], expected: dict[str, Any], prefix:
 def functional_loss(fixture: dict[str, Any], parameters: dict[str, Any], x_values: list[float], y: int | float) -> float:
     reference = TorchReference(fixture, parameters=parameters)
     with torch.no_grad():
-        _, activations = reference.forward(x_values)
-        return float(reference.loss(activations[-1], y))
+        zs, activations = reference.forward(x_values)
+        return float(reference.loss(activations[-1], y, zs[-1]))
 
 
 def finite_difference(fixture: dict[str, Any], kind: str, layer: int, j: int, i: int | None = None) -> float:
@@ -246,6 +251,62 @@ def test_relu_zero_uses_zero_derivative() -> None:
     assert float(result["delta"][1][0]) == 0.0
     assert float(result["gradW"][0][0][0]) == 0.0
     assert float(result["gradB"][0][0]) == 0.0
+
+
+@pytest.mark.parametrize("case", FIXTURES["lossBoundaries"], ids=lambda item: item["name"])
+def test_probability_loss_boundaries(case: dict[str, Any]) -> None:
+    assert FIXTURES["numericalContract"]["minimumPositiveNumber"] == MIN_POSITIVE
+    p = case["probability"]
+    expected = -math.log(p) if p > 0 else -math.log(MIN_POSITIVE)
+    assert math.isfinite(case["loss"])
+    assert_scalar_close(case["loss"], expected, case["name"])
+
+
+@pytest.mark.parametrize("fixture", FIXTURES["multiclassNumerics"], ids=lambda item: item["name"])
+def test_extreme_probabilities_preserve_theoretical_gradients(fixture: dict[str, Any]) -> None:
+    reference = TorchReference(fixture)
+    result = reference.compute(fixture["x"], fixture["y"])
+    target_probability = fixture["step"]["outputs"][fixture["y"]]
+    state = fixture["probabilityState"]
+    if state == "zero":
+        assert target_probability == 0
+    elif state == "subnormal":
+        assert 0 < target_probability < sys.float_info.min
+    elif state == "one":
+        assert target_probability == 1
+    else:
+        assert sys.float_info.min <= target_probability < 1
+
+    # The usual absolute tolerance would hide all errors in tiny probabilities.
+    for actual, expected in zip(fixture["step"]["outputs"], result["outputs"].detach().tolist(), strict=True):
+        assert math.isclose(actual, expected, rel_tol=RTOL, abs_tol=MIN_POSITIVE)
+
+    reported_loss = -math.log(max(target_probability, MIN_POSITIVE))
+    compare_step(reference, result, fixture["step"], fixture["learningRate"], fixture["name"], reported_loss=reported_loss)
+    assert_scalar_close(fixture["sampleLoss"], reported_loss, "sampleLoss")
+    assert_scalar_close(fixture["meanLoss"], reported_loss, "meanLoss")
+    reference.apply_gradient_descent(fixture["learningRate"])
+    compare_parameters(reference.parameter_snapshot(), fixture["updatedParameters"], fixture["name"])
+
+    if state == "zero":
+        assert fixture["step"]["delta"][-1][fixture["y"]] == -1
+        assert float(result["loss"].detach()) > reported_loss
+
+
+@pytest.mark.parametrize("fixture", FIXTURES["multiclassNumerics"], ids=lambda item: item["name"])
+def test_commented_logits_alternative_against_pytorch(fixture: dict[str, Any]) -> None:
+    result = TorchReference(fixture).compute(fixture["x"], fixture["y"])
+    assert math.isfinite(fixture["commentedLogitsLoss"])
+    assert_scalar_close(fixture["commentedLogitsLoss"], float(result["loss"].detach()), fixture["name"])
+
+
+def test_commented_logits_alternative_is_invariant_to_common_shifts() -> None:
+    cases = {item["name"]: item for item in FIXTURES["multiclassNumerics"]}
+    base = cases["underflow_zero"]
+    for name in ("underflow_shifted_up", "underflow_shifted_down"):
+        assert_scalar_close(cases[name]["commentedLogitsLoss"], base["commentedLogitsLoss"], name)
+        assert cases[name]["step"]["outputs"] == base["step"]["outputs"]
+        assert cases[name]["step"]["err"] == base["step"]["err"]
 
 
 @pytest.mark.parametrize("trajectory", FIXTURES["trajectories"], ids=lambda item: item["name"])

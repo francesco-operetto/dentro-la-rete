@@ -3635,11 +3635,28 @@ function classFromOutputs(network, outputs) {
    squared-error loss for binary classification and regression. */
 function lossFromOutputs(network, outputs, y) {
   if (isMulticlassOutput(network)) {
-    return -Math.log(Math.max(1e-12, outputs[y]));
+    // Avoid log(0) if softmax has rounded the probability to zero.
+    // Every representable positive probability is left unchanged.
+    return -Math.log(Math.max(Number.MIN_VALUE, outputs[y]));
   }
   const difference = outputs[0] - y;
   return 0.5 * difference * difference;
 }
+
+/* Numerically more stable alternative, kept commented out for teaching purposes.
+   Takes pre-activations z, not the probabilities produced by softmax:
+   E = (m - z[y]) + log(sum(exp(z[i] - m))), where m = max(z).
+   The active form keeps the direct correspondence E = -log(p_y), but if p_y
+   rounds to zero it returns about 744.44, without recovering the lost
+   information. Backpropagation still uses the theoretical gradient p - t.
+   Adopting this alternative requires passing z to every loss calculation.
+
+function crossEntropyFromLogits(z, y) {
+  const m = Math.max(...z);
+  const sum = z.reduce((s, zi) => s + Math.exp(zi - m), 0);
+  return (m - z[y]) + Math.log(sum);
+}
+*/
 
 /* ---------- forward pass ----------
    For each neuron:  z = weighted sum of inputs + bias

@@ -3636,11 +3636,28 @@ function classFromOutputs(network, outputs) {
    l'uscita multiclasse, errore quadratico per binario e regressione. */
 function lossFromOutputs(network, outputs, y) {
   if (isMulticlassOutput(network)) {
-    return -Math.log(Math.max(1e-12, outputs[y]));
+    // Evita log(0) se la softmax ha arrotondato la probabilità a zero.
+    // Ogni probabilità positiva rappresentabile rimane invariata.
+    return -Math.log(Math.max(Number.MIN_VALUE, outputs[y]));
   }
   const difference = outputs[0] - y;
   return 0.5 * difference * difference;
 }
+
+/* Alternativa numericamente più stabile, mantenuta commentata a scopo didattico.
+   Riceve le pre-attivazioni z, non le probabilità prodotte dalla softmax:
+   E = (m - z[y]) + log(sum(exp(z[i] - m))), con m = max(z).
+   La forma attiva conserva la corrispondenza diretta E = -log(p_y), ma se p_y
+   è arrotondato a zero restituisce circa 744,44, senza recuperare l'informazione
+   perduta. La backpropagation continua a usare il gradiente teorico p - t.
+   Per adottare questa alternativa occorre passare z a ogni calcolo dell'errore.
+
+function crossEntropyFromLogits(z, y) {
+  const m = Math.max(...z);
+  const sum = z.reduce((s, zi) => s + Math.exp(zi - m), 0);
+  return (m - z[y]) + Math.log(sum);
+}
+*/
 
 /* ---------- Passo in avanti (forward) ----------
    Per ogni neurone:  z = somma pesata degli ingressi + bias

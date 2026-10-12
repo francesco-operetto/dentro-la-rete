@@ -25,6 +25,18 @@ Per alcuni parametri le derivate vengono controllate anche con differenze finite
 
 Sono incluse anche due brevi sequenze di sei aggiornamenti, usate per controllare l'interazione tra calcolo delle derivate e aggiornamento dei parametri.
 
+### Probabilità molto piccole e underflow
+
+L'errore multiclasse dell'applicazione usa `-Math.log(Math.max(Number.MIN_VALUE, p_y))`. Ogni probabilità positiva rappresentabile viene lasciata invariata; se la softmax restituisce zero per underflow, il valore dell'errore è circa `744,4400719213812`. `Number.MIN_VALUE` è il minimo positivo **subnormale**, non `Number.EPSILON` né il minimo numero normalizzato.
+
+La suite include dieci controlli diretti della loss, da probabilità 1 e 0,5 fino a `Number.MIN_VALUE` e zero, compresi valori sopra, sulla e sotto la precedente soglia `1e-12`. Un nuovo caso a singolo passo verifica anche loss, gradienti, aggiornamenti e differenze finite con una probabilità bersaglio dell'ordine di `1e-100`.
+
+Otto ulteriori casi coprono probabilità ordinarie, molto piccole, subnormali, arrotondate a zero e arrotondate a uno. Si verificano anche `sampleLoss`, `meanLoss`, la composizione di `trainingStep` e i parametri dopo l'aggiornamento. Per questi casi il valore dell'errore viene confrontato con il logaritmo della probabilità effettivamente prodotta da JavaScript, con la sola protezione sullo zero; i gradienti vengono invece confrontati con `torch.nn.functional.cross_entropy` sulle pre-attivazioni. Questa distinzione è intenzionale: in presenza di underflow la loss visualizzata può differire da quella teorica, mentre la backpropagation continua a usare `p - t`. Non si deriva la funzione con soglia usando autograd, perché non rappresenterebbe il gradiente adottato dall'applicazione.
+
+Le probabilità estreme vengono confrontate con PyTorch con tolleranza assoluta pari al minimo positivo subnormale: la tolleranza ordinaria della suite nasconderebbe errori su valori così piccoli. Le differenze finite dei casi ordinari, compreso il nuovo caso con probabilità piccola ma normalizzata, usano la loss teorica calcolata dalle pre-attivazioni; non vengono applicate alla loss arrotondata nei casi estremi.
+
+Il generatore estrae inoltre dal commento nel file HTML la funzione didattica `crossEntropyFromLogits`, verifica che sia assente dal codice attivo e la esegue in un contesto separato. La sua loss viene confrontata con PyTorch anche in underflow e dopo traslazioni comuni delle pre-attivazioni. In questo modo viene controllato l'esempio effettivamente presente nel sorgente, senza attivarlo nell'applicazione. Non viene imposto il limite artificiale di circa 744,44 all'alternativa basata sulle pre-attivazioni.
+
 ### Esecuzione locale
 
 Requisiti: Node.js, Python, `pytest` e PyTorch.
@@ -82,6 +94,18 @@ While generating the fixtures, the suite also checks every single-step case to e
 For selected parameters, the gradients are also checked with centered finite differences. This check uses a looser tolerance than the autograd comparison because numerical differentiation introduces truncation and rounding error.
 
 The suite also includes two short six-update trajectories to check the interaction between gradient calculation and parameter updates.
+
+### Very small probabilities and underflow
+
+The application's multiclass loss uses `-Math.log(Math.max(Number.MIN_VALUE, p_y))`. Every representable positive probability is left unchanged; if softmax returns zero through underflow, the reported loss is about `744.4400719213812`. `Number.MIN_VALUE` is the smallest positive **subnormal**, not `Number.EPSILON` or the smallest normal number.
+
+The suite includes ten direct loss checks, from probabilities 1 and 0.5 down to `Number.MIN_VALUE` and zero, including values above, at, and below the former `1e-12` floor. A new single-step case also checks loss, gradients, updates, and finite differences with a target probability of the order of `1e-100`.
+
+Eight additional cases cover ordinary, very small, subnormal, rounded-to-zero, and rounded-to-one probabilities. They also check `sampleLoss`, `meanLoss`, the composition of `trainingStep`, and the updated parameters. For these cases, the reported loss is compared with the logarithm of the probability actually produced by JavaScript, with only the zero guard; gradients are compared with `torch.nn.functional.cross_entropy` applied to logits. This distinction is intentional: under underflow the displayed loss can differ from the theoretical loss, while backpropagation still uses `p - t`. Autograd does not differentiate the clamped loss, since that would not represent the gradient used by the application.
+
+Extreme probabilities are compared with PyTorch using an absolute tolerance equal to the smallest positive subnormal: the suite's ordinary tolerance would conceal errors in such tiny values. Finite differences for the ordinary cases, including the new small-but-normal target probability case, use the theoretical loss computed from logits; they are not applied to the rounded loss in the extreme cases.
+
+The generator also extracts the teaching function `crossEntropyFromLogits` from its comment in the HTML file, checks that it is absent from the active code, and executes it in a separate context. Its loss is compared with PyTorch even under underflow and after common shifts of all logits. This tests the actual example in the source without enabling it in the application. The artificial limit of about 744.44 is not imposed on the logits-based alternative.
 
 ### Running locally
 

@@ -102,15 +102,29 @@ function loadAppApi(htmlPath) {
   const context = vm.createContext({ console, Math });
   const expose = `\n;globalThis.__networkTestApi = {\n` +
     `  ACTIVATIONS, forward, computeStep, prepareUpdates, applyStep,\n` +
-    `  trainingStep, lossFromOutputs, softmax\n` +
+    `  trainingStep, lossFromOutputs, sampleLoss, meanLoss, softmax\n` +
     `};\n`;
 
   vm.runInContext(engine + expose, context, {
     filename: `${path.basename(htmlPath)}#numerical-engine`,
   });
 
+  // Exercise the actual teaching example, without enabling it in the app.
+  assert.equal(vm.runInContext('typeof crossEntropyFromLogits', context), 'undefined',
+    'The logits-based alternative must remain commented out in the application.');
+  const examples = [...engine.matchAll(/\/\*([\s\S]*?)\*\//g)]
+    .map(match => match[1])
+    .filter(comment => comment.includes('function crossEntropyFromLogits(z, y)'));
+  assert.equal(examples.length, 1, 'Expected one commented crossEntropyFromLogits example.');
+  const exampleCode = examples[0].slice(examples[0].indexOf('function crossEntropyFromLogits'));
+  const commentedLoss = vm.runInNewContext(
+    exampleCode + '\n;crossEntropyFromLogits;', { Math },
+    { filename: `${path.basename(htmlPath)}#commented-loss-example` },
+  );
+
   return {
     api: context.__networkTestApi,
+    commentedLoss,
     engineHash: crypto.createHash('sha256').update(engine).digest('hex'),
   };
 }
@@ -222,7 +236,7 @@ function makeTrajectory(api, spec) {
   };
 }
 
-function buildFixtures(api, sourceInfo) {
+function buildFixtures(api, commentedLoss, sourceInfo) {
   const binary = { type: 'binary', neurons: 1 };
   const regression = { type: 'regression', neurons: 1 };
 
@@ -282,6 +296,15 @@ function buildFixtures(api, sourceInfo) {
       x: [0.25], y: 1, learningRate: 0.10, finiteDifference: false,
       note: 'The hidden pre-activation is exactly zero, so both implementations use 0 for the ReLU derivative at this point.',
     },
+    {
+      name: 'multiclass_probability_below_old_floor',
+      network: {
+        arch: [1, 3], att: 'linear', output: { type: 'multiclass', neurons: 3 },
+        weights: [[[0.6], [-0.4], [0.2]]], bias: [[0, -230, -1]],
+      },
+      x: [0.5], y: 1, learningRate: 0.05,
+      note: 'A positive target probability far below 1e-12 must retain its full loss and gradient.',
+    },
   ];
 
   const trajectorySpecs = [
@@ -318,6 +341,45 @@ function buildFixtures(api, sourceInfo) {
   const cases = singleSpecs.map(spec => makeSingleCase(api, spec));
   const trajectories = trajectorySpecs.map(spec => makeTrajectory(api, spec));
 
+  // These cases deliberately distinguish the reported probability-based loss
+  // from the theoretical cross-entropy gradient once probabilities underflow.
+  const numericalSpecs = [
+    { name: 'ordinary', z: [2, 0, -1], y: 2, probabilityState: 'normal' },
+    { name: 'below_old_floor', z: [0, -40, -2], y: 1, probabilityState: 'normal' },
+    { name: 'very_small_positive', z: [0, -230, -2], y: 1, probabilityState: 'normal' },
+    { name: 'subnormal_positive', z: [0, -740, -2], y: 1, probabilityState: 'subnormal' },
+    { name: 'underflow_zero', z: [0, -1000, -2], y: 1, probabilityState: 'zero' },
+    { name: 'underflow_shifted_up', z: [1000, 0, 998], y: 1, probabilityState: 'zero' },
+    { name: 'underflow_shifted_down', z: [-1000, -2000, -1002], y: 1, probabilityState: 'zero' },
+    { name: 'rounded_to_one', z: [-1000, 0, -1002], y: 1, probabilityState: 'one' },
+  ];
+  const multiclassNumerics = numericalSpecs.map(spec => {
+    const network = {
+      arch: [1, spec.z.length], att: 'linear',
+      output: { type: 'multiclass', neurons: spec.z.length },
+      weights: [spec.z.map(() => [0])], bias: [spec.z.slice()],
+    };
+    const stepSpec = { ...spec, network, x: [0.25], learningRate: 0.05, finiteDifference: false };
+    assertTrainingStepComposition(api, stepSpec);
+    const fixture = makeSingleCase(api, stepSpec);
+    const sample = { x: stepSpec.x, y: spec.y };
+    return {
+      ...fixture, probabilityState: spec.probabilityState,
+      commentedLogitsLoss: commentedLoss(spec.z, spec.y),
+      sampleLoss: api.sampleLoss(network, sample),
+      meanLoss: api.meanLoss(network, [sample, sample]),
+    };
+  });
+
+  const lossBoundaries = [
+    ['one', 1], ['half', 0.5], ['above_old_floor', 1e-11], ['old_floor', 1e-12],
+    ['below_old_floor', 1e-13], ['tiny_positive', 1e-100], ['near_normal_limit', 1e-300],
+    ['twice_minimum', 2 * Number.MIN_VALUE], ['minimum_positive', Number.MIN_VALUE], ['zero', 0],
+  ].map(([name, probability]) => ({
+    name, probability,
+    loss: api.lossFromOutputs({ output: { type: 'multiclass' } }, [1 - probability, probability], 1),
+  }));
+
   // Verify that the other ReLU fixtures stay away from the non-differentiable point at zero.
   for (const fixture of cases.filter(item => item.activation === 'relu' && item.name !== 'relu_zero_convention')) {
     const hiddenZ = fixture.step.zs.slice(1, -1).flat();
@@ -327,7 +389,7 @@ function buildFixtures(api, sourceInfo) {
   }
 
   return {
-    formatVersion: 1,
+    formatVersion: 2,
     generatedBy: 'tests/generate_fixtures.mjs',
     source: sourceInfo,
     numericalContract: {
@@ -335,9 +397,14 @@ function buildFixtures(api, sourceInfo) {
       comparisonReference: 'PyTorch float64 autograd',
       singleStepRtol: 1e-12,
       singleStepAtol: 1e-13,
+      minimumPositiveNumber: Number.MIN_VALUE,
+      reportedMulticlassLoss: '-log(max(Number.MIN_VALUE, p_y))',
+      multiclassGradient: 'theoretical cross-entropy from logits (p - t)',
     },
     cases,
     trajectories,
+    multiclassNumerics,
+    lossBoundaries,
   };
 }
 
@@ -350,8 +417,8 @@ function main() {
 
   const htmlPath = path.resolve(args.html || discoverHtml());
   const outputPath = path.resolve(args.out);
-  const { api, engineHash } = loadAppApi(htmlPath);
-  const fixtures = buildFixtures(api, {
+  const { api, commentedLoss, engineHash } = loadAppApi(htmlPath);
+  const fixtures = buildFixtures(api, commentedLoss, {
     htmlFile: path.relative(REPO_ROOT, htmlPath).replaceAll(path.sep, '/'),
     numericalEngineSha256: engineHash,
   });
@@ -362,8 +429,10 @@ function main() {
   console.log(`Application: ${htmlPath}`);
   console.log(`Numerical engine SHA-256: ${engineHash}`);
   console.log(`Single-step cases: ${fixtures.cases.length}`);
-  console.log(`trainingStep composition checks: ${fixtures.cases.length} exact matches`);
+  console.log(`trainingStep composition checks: ${fixtures.cases.length + fixtures.multiclassNumerics.length} exact matches`);
   console.log(`Short trajectories: ${fixtures.trajectories.length}`);
+  console.log(`Multiclass numerical edge cases: ${fixtures.multiclassNumerics.length}`);
+  console.log(`Probability loss boundary cases: ${fixtures.lossBoundaries.length}`);
   console.log(`Fixture file: ${outputPath}`);
 }
 
