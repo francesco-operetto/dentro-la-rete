@@ -1,6 +1,6 @@
 # Dentro la rete / Inside the Network
 
-**Versione / Version: 7.3.34 beta**
+**Versione / Version: 7.3.35 beta**
 
 [![Numerical validation](https://github.com/francesco-operetto/dentro-la-rete/actions/workflows/numerical-validation.yml/badge.svg)](https://github.com/francesco-operetto/dentro-la-rete/actions/workflows/numerical-validation.yml)
 
@@ -181,6 +181,6 @@ Code and texts were developed and revised with the assistance of AI tools.
 
 ## Stato del progetto / Project status
 
-La versione corrente è **7.3.34 beta**.
+La versione corrente è **7.3.35 beta**.
 
-The current version is **7.3.34 beta**.
+The current version is **7.3.35 beta**.

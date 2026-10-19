@@ -702,6 +702,7 @@ main.step-mode .inspector-card #inspector-content {
   font-size: var(--insight-text-size);
 }
 .activation-guide-intro strong { color: var(--ink); }
+.activation-guide-practice { margin: 11px 0 0; }
 .activations-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -2325,6 +2326,7 @@ dialog .guide-index a {
                       <p class="network-effect"><b>Effect in the network:</b> each output neuron corresponds to one class. Softmax converts the input values into positive numbers that sum to 1 and can be interpreted as estimated class probabilities; the network predicts the class with the highest probability. In the example, the first class is selected. In this app, softmax is used only in the output layer of multiclass problems.</p>
                     </article>
                   </div>
+                  <p class="activation-guide-intro activation-guide-practice"><strong>In practice.</strong> Hidden layers in today’s deep networks mostly use ReLU and its smooth variants (notably GELU and SiLU); tanh and sigmoid remain useful for understanding the mechanisms and are still used in some architectures. In almost all of this app’s problems, tanh is the default: it works well in networks this small and produces smooth boundaries.</p>
                 </div>
               </details>
               <span class="activation-control-note">Definitions, graphs, and effects in the network</span>
@@ -2649,7 +2651,7 @@ dialog .guide-index a {
 
     </main>
 
-    <footer>© <a href="https://francesco-operetto.github.io/" rel="author">Francesco Operetto</a>, 2026 · Software: <a href="#gpl-license-dialog" id="gpl-license-link" aria-haspopup="dialog">GPL-3.0-or-later</a> · Educational content: <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" rel="license noopener">CC BY-SA 4.0</a> · Version: <span id="app-version">7.3.34 beta</span></footer>
+    <footer>© <a href="https://francesco-operetto.github.io/" rel="author">Francesco Operetto</a>, 2026 · Software: <a href="#gpl-license-dialog" id="gpl-license-link" aria-haspopup="dialog">GPL-3.0-or-later</a> · Educational content: <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" rel="license noopener">CC BY-SA 4.0</a> · Version: <span id="app-version">7.3.35 beta</span></footer>
 
     <!-- ============ GPL LICENSE ============ -->
     <dialog id="gpl-license-dialog" class="license-dialog" aria-labelledby="gpl-license-title">
