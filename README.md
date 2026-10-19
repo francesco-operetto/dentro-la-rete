@@ -60,21 +60,29 @@ The root `index.html` is a bilingual landing page for choosing the language.
 - import of classification datasets in CSV/TSV format;
 - reproducible experiments through a fixed random seed.
 
-## Approfondimenti sugli algoritmi / Algorithm notes
+## Approfondimenti matematici / Mathematical notes
 
-La cartella [`docs/algorithms/`](docs/algorithms/) contiene due schede di approfondimento che collegano la derivazione matematica della **backpropagation** e della **discesa del gradiente** alla loro implementazione nell’applicazione:
+La cartella [`docs/algorithms/`](docs/algorithms/) contiene i materiali di approfondimento matematico collegati all’applicazione, in italiano e in inglese:
 
-- [Backpropagation e discesa del gradiente — IT](docs/algorithms/backpropagation_e_discesa_del_gradiente_it.pdf)
-- [Backpropagation and Gradient Descent — EN](docs/algorithms/backpropagation_and_gradient_descent_en.pdf)
+- **Note matematiche sulle reti neurali**: dalla funzione calcolata dalla rete alla discesa del gradiente, passando per funzioni di attivazione, softmax, entropia incrociata e backpropagation, con i riferimenti all’implementazione nell’applicazione.
+  - [Note matematiche sulle reti neurali — IT](docs/algorithms/note_matematiche_reti_neurali.pdf)
+  - [Mathematical Notes on Neural Networks — EN](docs/algorithms/mathematical_notes_neural_networks.pdf)
+- **La classificazione automatica dei colori RGB**: la regola, basata sulla luminanza relativa sRGB e sul rapporto di contrasto WCAG, con cui il comando *Genera e classifica 10 colori* etichetta i colori come chiari o scuri.
+  - [La classificazione automatica dei colori RGB — IT](docs/algorithms/classificazione_automatica_colori_RGB.pdf)
+  - [Automatic Classification of RGB Colors — EN](docs/algorithms/automatic_classification_RGB_colors.pdf)
 
-Le schede sono distribuite secondo la licenza **CC BY-SA 4.0** e sono versionate insieme al repository mantenendo nomi di file stabili.
+I documenti sono distribuiti secondo la licenza **CC BY-SA 4.0** e sono versionati insieme al repository.
 
-The [`docs/algorithms/`](docs/algorithms/) folder contains two companion notes connecting the mathematical derivation of **backpropagation** and **gradient descent** to their implementation in the application:
+The [`docs/algorithms/`](docs/algorithms/) folder contains mathematical companion notes to the application, in Italian and English:
 
-- [Backpropagation e discesa del gradiente — IT](docs/algorithms/backpropagation_e_discesa_del_gradiente_it.pdf)
-- [Backpropagation and Gradient Descent — EN](docs/algorithms/backpropagation_and_gradient_descent_en.pdf)
+- **Mathematical Notes on Neural Networks**: from the function computed by the network to gradient descent, covering activation functions, softmax, cross-entropy, and backpropagation, with references to their implementation in the application.
+  - [Note matematiche sulle reti neurali — IT](docs/algorithms/note_matematiche_reti_neurali.pdf)
+  - [Mathematical Notes on Neural Networks — EN](docs/algorithms/mathematical_notes_neural_networks.pdf)
+- **Automatic Classification of RGB Colors**: the rule, based on sRGB relative luminance and the WCAG contrast ratio, that the *Auto-label 10 colors* command uses to label colors as light or dark.
+  - [La classificazione automatica dei colori RGB — IT](docs/algorithms/classificazione_automatica_colori_RGB.pdf)
+  - [Automatic Classification of RGB Colors — EN](docs/algorithms/automatic_classification_RGB_colors.pdf)
 
-The notes are released under **CC BY-SA 4.0** and are versioned with the repository while keeping stable filenames.
+The documents are released under **CC BY-SA 4.0** and are versioned with the repository.
 
 ## Dataset di esempio per l’importazione / Example import dataset
 
@@ -123,8 +131,10 @@ dentro-la-rete/
 │       └── test_import_9_input_6_classi_2000_difficolta_intermedia.csv
 ├── docs/
 │   └── algorithms/
-│       ├── backpropagation_e_discesa_del_gradiente_it.pdf
-│       └── backpropagation_and_gradient_descent_en.pdf
+│       ├── note_matematiche_reti_neurali.pdf
+│       ├── mathematical_notes_neural_networks.pdf
+│       ├── classificazione_automatica_colori_RGB.pdf
+│       └── automatic_classification_RGB_colors.pdf
 ├── tests/
 │   ├── README.md
 │   ├── generate_fixtures.mjs
