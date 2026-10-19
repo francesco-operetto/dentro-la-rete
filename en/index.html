@@ -3635,6 +3635,7 @@ function classFromOutputs(network, outputs) {
    squared-error loss for binary classification and regression. */
 function lossFromOutputs(network, outputs, y) {
   if (isMulticlassOutput(network)) {
+    // Here y is the index c of the correct class: outputs[y] is the probability p_c.
     // Avoid log(0) if softmax has rounded the probability to zero.
     // Every representable positive probability is left unchanged.
     return -Math.log(Math.max(Number.MIN_VALUE, outputs[y]));
@@ -3644,9 +3645,10 @@ function lossFromOutputs(network, outputs, y) {
 }
 
 /* Numerically more stable alternative, kept commented out for teaching purposes.
-   Takes pre-activations z, not the probabilities produced by softmax:
+   Takes pre-activations z, not the probabilities produced by softmax,
+   and the index y of the correct class, denoted by c in the formulas:
    E = (m - z[y]) + log(sum(exp(z[i] - m))), where m = max(z).
-   The active form keeps the direct correspondence E = -log(p_y), but if p_y
+   The active form keeps the direct correspondence E = -log(p_c), but if p_c
    rounds to zero it returns about 744.44, without recovering the lost
    information. Backpropagation still uses the theoretical gradient p - t.
    Adopting this alternative requires passing z to every loss calculation.
@@ -9665,8 +9667,8 @@ async function oneSampleStep() {
       `<p class="step-caption"><b>2 · Loss.</b> The loss function assigns a value to this example: the better the prediction matches the expected output, the lower the value.</p>` +
       `<p>Loss for this example: <span class="numeric">E = ${formatNumber(stepDetails.err, 4, 4)}</span></p>` +
       `<p><b>Loss function:</b> cross-entropy</p>` +
-      `<div class="formula">E = −ln(p<sub>y</sub>) = −ln(${formatNumber(pObserved, 3, 3)}) = ${formatNumber(stepDetails.err, 4, 4)}</div>` +
-      `<p class="small-notice"><span class="numeric">p<sub>y</sub></span> is the output corresponding to the observed class: <b>${classNameHtml(d.y, m)}</b>.</p>`
+      `<div class="formula">E = −ln(p<sub>c</sub>) = −ln(${formatNumber(pObserved, 3, 3)}) = ${formatNumber(stepDetails.err, 4, 4)}</div>` +
+      `<p class="small-notice"><span class="numeric">p<sub>c</sub></span> is the output corresponding to the observed class <span class="numeric">c</span>: <b>${classNameHtml(d.y, m)}</b>.</p>`
     );
   }
   await forwardButtonHtml('Follow backpropagation and update the parameters');

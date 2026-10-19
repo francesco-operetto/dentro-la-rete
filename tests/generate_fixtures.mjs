@@ -398,7 +398,7 @@ function buildFixtures(api, commentedLoss, sourceInfo) {
       singleStepRtol: 1e-12,
       singleStepAtol: 1e-13,
       minimumPositiveNumber: Number.MIN_VALUE,
-      reportedMulticlassLoss: '-log(max(Number.MIN_VALUE, p_y))',
+      reportedMulticlassLoss: '-log(max(Number.MIN_VALUE, p_c))',
       multiclassGradient: 'theoretical cross-entropy from logits (p - t)',
     },
     cases,

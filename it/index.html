@@ -3636,6 +3636,7 @@ function classFromOutputs(network, outputs) {
    l'uscita multiclasse, errore quadratico per binario e regressione. */
 function lossFromOutputs(network, outputs, y) {
   if (isMulticlassOutput(network)) {
+    // Qui y è l'indice c della classe corretta: outputs[y] è la probabilità p_c.
     // Evita log(0) se la softmax ha arrotondato la probabilità a zero.
     // Ogni probabilità positiva rappresentabile rimane invariata.
     return -Math.log(Math.max(Number.MIN_VALUE, outputs[y]));
@@ -3645,9 +3646,10 @@ function lossFromOutputs(network, outputs, y) {
 }
 
 /* Alternativa numericamente più stabile, mantenuta commentata a scopo didattico.
-   Riceve le pre-attivazioni z, non le probabilità prodotte dalla softmax:
+   Riceve le pre-attivazioni z, non le probabilità prodotte dalla softmax,
+   e l'indice y della classe corretta, indicata con c nelle formule:
    E = (m - z[y]) + log(sum(exp(z[i] - m))), con m = max(z).
-   La forma attiva conserva la corrispondenza diretta E = -log(p_y), ma se p_y
+   La forma attiva conserva la corrispondenza diretta E = -log(p_c), ma se p_c
    è arrotondato a zero restituisce circa 744,44, senza recuperare l'informazione
    perduta. La backpropagation continua a usare il gradiente teorico p - t.
    Per adottare questa alternativa occorre passare z a ogni calcolo dell'errore.
@@ -9694,8 +9696,8 @@ async function oneSampleStep() {
       `<p class="step-caption"><b>2 · Errore.</b> La funzione di errore assegna a questo esempio un valore: più la previsione è coerente con il risultato atteso, più il valore è piccolo.</p>` +
       `<p>Errore su questo esempio: <span class="numeric">E = ${formatNumber(stepDetails.err, 4, 4)}</span></p>` +
       `<p><b>Funzione di errore:</b> entropia incrociata</p>` +
-      `<div class="formula">E = −ln(p<sub>y</sub>) = −ln(${formatNumber(pObserved, 3, 3)}) = ${formatNumber(stepDetails.err, 4, 4)}</div>` +
-      `<p class="small-notice"><span class="numeric">p<sub>y</sub></span> è il valore di uscita corrispondente alla classe a cui appartiene l’esempio osservato: <b>${classNameHtml(d.y, m)}</b>.</p>`
+      `<div class="formula">E = −ln(p<sub>c</sub>) = −ln(${formatNumber(pObserved, 3, 3)}) = ${formatNumber(stepDetails.err, 4, 4)}</div>` +
+      `<p class="small-notice"><span class="numeric">p<sub>c</sub></span> è il valore di uscita corrispondente alla classe <span class="numeric">c</span> a cui appartiene l’esempio osservato: <b>${classNameHtml(d.y, m)}</b>.</p>`
     );
   }
   await forwardButtonHtml('Segui la backpropagation e aggiorna i parametri');

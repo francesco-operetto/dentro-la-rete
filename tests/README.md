@@ -27,7 +27,7 @@ Sono incluse anche due brevi sequenze di sei aggiornamenti, usate per controllar
 
 ### Probabilità molto piccole e underflow
 
-L'errore multiclasse dell'applicazione usa `-Math.log(Math.max(Number.MIN_VALUE, p_y))`. Ogni probabilità positiva rappresentabile viene lasciata invariata; se la softmax restituisce zero per underflow, il valore dell'errore è circa `744,4400719213812`. `Number.MIN_VALUE` è il minimo positivo **subnormale**, non `Number.EPSILON` né il minimo numero normalizzato.
+L'errore multiclasse dell'applicazione usa `-Math.log(Math.max(Number.MIN_VALUE, p_c))`, dove `p_c` è la probabilità assegnata alla classe corretta `c`. Ogni probabilità positiva rappresentabile viene lasciata invariata; se la softmax restituisce zero per underflow, il valore dell'errore è circa `744,4400719213812`. `Number.MIN_VALUE` è il minimo positivo **subnormale**, non `Number.EPSILON` né il minimo numero normalizzato.
 
 La suite include dieci controlli diretti della loss, da probabilità 1 e 0,5 fino a `Number.MIN_VALUE` e zero, compresi valori sopra, sulla e sotto la precedente soglia `1e-12`. Un nuovo caso a singolo passo verifica anche loss, gradienti, aggiornamenti e differenze finite con una probabilità bersaglio dell'ordine di `1e-100`.
 
@@ -97,7 +97,7 @@ The suite also includes two short six-update trajectories to check the interacti
 
 ### Very small probabilities and underflow
 
-The application's multiclass loss uses `-Math.log(Math.max(Number.MIN_VALUE, p_y))`. Every representable positive probability is left unchanged; if softmax returns zero through underflow, the reported loss is about `744.4400719213812`. `Number.MIN_VALUE` is the smallest positive **subnormal**, not `Number.EPSILON` or the smallest normal number.
+The application's multiclass loss uses `-Math.log(Math.max(Number.MIN_VALUE, p_c))`, where `p_c` is the probability assigned to the correct class `c`. Every representable positive probability is left unchanged; if softmax returns zero through underflow, the reported loss is about `744.4400719213812`. `Number.MIN_VALUE` is the smallest positive **subnormal**, not `Number.EPSILON` or the smallest normal number.
 
 The suite includes ten direct loss checks, from probabilities 1 and 0.5 down to `Number.MIN_VALUE` and zero, including values above, at, and below the former `1e-12` floor. A new single-step case also checks loss, gradients, updates, and finite differences with a target probability of the order of `1e-100`.
 
