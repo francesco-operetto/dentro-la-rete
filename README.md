@@ -161,13 +161,17 @@ Il **software**, compresi i commenti tecnici al codice, è distribuito secondo l
 
 I **contenuti didattici ed esplicativi originali destinati all'utente** — tra cui guida, spiegazioni, descrizioni dei problemi, attività e osservazioni — sono disponibili anche secondo la **Creative Commons Attribution-ShareAlike 4.0 International (CC BY-SA 4.0)**.
 
-Per i dettagli sulla distinzione tra le due licenze, vedi [`LICENSE-CONTENT.md`](LICENSE-CONTENT.md).
+Al software si applicano inoltre due termini aggiuntivi, consentiti dalla sezione 7 della GPL: l'attribuzione all'autore deve restare visibile nell'interfaccia di ogni copia e di ogni versione modificata, e le versioni modificate devono essere indicate come tali, senza essere presentate come la versione originale.
+
+Per il testo completo dei termini aggiuntivi e per i dettagli sulla distinzione tra le due licenze, vedi [`LICENSE-CONTENT.md`](LICENSE-CONTENT.md).
 
 The **software**, including technical source-code comments, is released under the **GNU General Public License v3.0 or later (GPL-3.0-or-later)**. The complete license text is in [`LICENSE`](LICENSE).
 
 The original **educational and explanatory material intended for users** — including the guide, explanations, problem descriptions, activities and observations — is also available under the **Creative Commons Attribution-ShareAlike 4.0 International (CC BY-SA 4.0)**.
 
-See [`LICENSE-CONTENT.md`](LICENSE-CONTENT.md) for details on the distinction between the two licenses.
+Two additional terms, permitted by section 7 of the GPL, also apply to the software: the author attribution must remain visible in the user interface of every copy and every modified version, and modified versions must be marked as such and may not be presented as the original version.
+
+See [`LICENSE-CONTENT.md`](LICENSE-CONTENT.md) for the full additional terms and for details on the distinction between the two licenses.
 
 ## Attribuzione / Attribution
 
